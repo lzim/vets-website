@@ -1,6 +1,7 @@
-@import "style";
 @import "modules/va-pagination";
-// @import "~react-tabs/style/react-tabs.scss";
+@import "style";
+@import "~leaflet/dist/leaflet.css";
+@import "~react-tabs/style/react-tabs";
 
 .facility-locator {
   // TODO(css): Fix when #content .section h* is fixed
@@ -322,6 +323,7 @@
 
       span {
         height: 2.4em;
+        text-align: left;
       }
 
       button.facility-option {
@@ -357,8 +359,9 @@
 
       .dropdown {
         position: absolute;
+        width: 102%;
         top: 0;
-        left: 0;
+        left: -1%;
         right: 0;
         background: $color-white;
         list-style: none;
