@@ -19,6 +19,23 @@ export function updateLocation(propertyPath, value) {
   };
 }
 
+export function getDrivingTimes(destinationData, bounds) {
+  const centerLng = (bounds[0] + bounds[2]) / 2;
+  const centerLat = (bounds[1] + bounds[3]) / 2;
+
+  const destinations = destinationData.map(d => {
+    return [d.attributes.long, d.attributes.lat];
+  });
+
+  destinations.unshift([centerLng, centerLat]);
+
+  // mapboxClient.getDistances(destinations, {
+  //   profile: 'driving'
+  // }, (err, res) => {
+  //   console.log(res);
+  // });
+}
+
 export function fetchVAFacility(id, facility = null) {
   if (facility) {
     return {
@@ -69,8 +86,13 @@ export function searchWithBounds(bounds, facilityType, serviceType, page = 1) {
       .then(
         data => {
           dispatch({ type: 'FETCH_VA_FACILITIES', payload: data });
+          return data;
         },
         err => dispatch({ type: 'SEARCH_FAILED', err })
+      ).then(
+        data => {
+          getDrivingTimes(data.data, bounds);
+        }
       );
   };
 }
