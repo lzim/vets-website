@@ -1,3 +1,9 @@
+def notify(message, color='good') {
+   slackSend message: message,
+          color: color,
+          failOnError: true
+}
+
 def envNames = ['development', 'staging', 'production']
 
 def isReviewable = {
@@ -11,7 +17,7 @@ env.CONCURRENCY = 10
 def isDeployable = {
   (env.BRANCH_NAME == 'master' ||
     env.BRANCH_NAME == 'production' ||
-    env.BRANCH_NAME == 'kudos-launch') &&
+    env.BRANCH_NAME == 'jk-deployment-notification') &&
     !env.CHANGE_TARGET
 }
 
@@ -27,152 +33,169 @@ def buildDetails = { vars ->
 }
 
 node('vets-website-linting') {
-  def dockerImage, args
+  try {
+    def dockerImage, args
 
-  // Checkout source, create output directories, build container
+    // Checkout source, create output directories, build container
 
-  stage('Setup') {
-    checkout scm
+    stage('Setup') {
+      checkout scm
 
-    sh "mkdir -p build"
-    sh "mkdir -p logs/selenium"
-    sh "mkdir -p coverage"
+      sh "mkdir -p build"
+      sh "mkdir -p logs/selenium"
+      sh "mkdir -p coverage"
 
-    def imageTag = java.net.URLDecoder.decode(env.BUILD_TAG).replaceAll("[^A-Za-z0-9\\-\\_]", "-")
+      def imageTag = java.net.URLDecoder.decode(env.BUILD_TAG).replaceAll("[^A-Za-z0-9\\-\\_]", "-")
 
-    dockerImage = docker.build("vets-website:${imageTag}")
-    args = "-v ${pwd()}/build:/application/build -v ${pwd()}/logs:/application/logs -v ${pwd()}/coverage:/application/coverage"
-  }
-
-  // Check package.json for known vulnerabilities
-
-  stage('Security') {
-
-    dockerImage.inside(args) {
-      sh "cd /application && nsp check"
-    }
-  }
-
-  // Check source for syntax issues
-
-  stage('Lint') {
-
-    dockerImage.inside(args) {
-      sh "cd /application && npm --no-color run lint"
-    }
-  }
-
-  stage('Unit') {
-
-    dockerImage.inside(args) {
-      sh "cd /application && npm --no-color run test:coverage"
-      sh "cd /application && CODECLIMATE_REPO_TOKEN=fe4a84c212da79d7bb849d877649138a9ff0dbbef98e7a84881c97e1659a2e24 codeclimate-test-reporter < ./coverage/lcov.info"
-    }
-  }
-
-  stage('Review') {
-    if (!isReviewable()) {
-      return
+      dockerImage = docker.build("vets-website:${imageTag}")
+      args = "-v ${pwd()}/build:/application/build -v ${pwd()}/logs:/application/logs -v ${pwd()}/coverage:/application/coverage"
     }
 
-    build job: 'deploys/vets-review-instance-deploy', parameters: [
-      stringParam(name: 'devops_branch', value: 'master'),
-      stringParam(name: 'api_branch', value: 'master'),
-      stringParam(name: 'web_branch', value: env.BRANCH_NAME),
-      stringParam(name: 'source_repo', value: 'vets-website'),
-    ], wait: false
-  }
+    // Check package.json for known vulnerabilities
 
-  // Perform a build for each required build type
+    stage('Security') {
 
-  stage('Build') {
-    def buildList = ['production']
-
-    if (env.BRANCH_NAME == 'master') {
-      buildList << 'development'
-      buildList << 'staging'
+      dockerImage.inside(args) {
+        sh "cd /application && nsp check"
+      }
     }
 
-    def builds = [:]
+    // Check source for syntax issues
 
-    for (int i=0; i<envNames.size(); i++) {
-      def envName = envNames.get(i)
+    stage('Lint') {
 
-      if (buildList.contains(envName)) {
-        builds[envName] = {
+      dockerImage.inside(args) {
+        sh "cd /application && npm --no-color run lint"
+      }
+    }
+
+    stage('Unit') {
+
+      dockerImage.inside(args) {
+        sh "cd /application && npm --no-color run test:coverage"
+        sh "cd /application && CODECLIMATE_REPO_TOKEN=fe4a84c212da79d7bb849d877649138a9ff0dbbef98e7a84881c97e1659a2e24 codeclimate-test-reporter < ./coverage/lcov.info"
+      }
+    }
+
+    stage('Review') {
+      if (!isReviewable()) {
+        return
+      }
+
+      build job: 'deploys/vets-review-instance-deploy', parameters: [
+        stringParam(name: 'devops_branch', value: 'master'),
+        stringParam(name: 'api_branch', value: 'master'),
+        stringParam(name: 'web_branch', value: env.BRANCH_NAME),
+        stringParam(name: 'source_repo', value: 'vets-website'),
+      ], wait: false
+    }
+
+    // Perform a build for each required build type
+
+    stage('Build') {
+      def buildList = ['production']
+
+      if (env.BRANCH_NAME == 'master') {
+        buildList << 'development'
+        buildList << 'staging'
+      }
+
+      def builds = [:]
+
+      for (int i=0; i<envNames.size(); i++) {
+        def envName = envNames.get(i)
+
+        if (buildList.contains(envName)) {
+          builds[envName] = {
+            dockerImage.inside(args) {
+              sh "cd /application && npm --no-color run build -- --buildtype=${envName}"
+              sh "cd /application && echo \"${buildDetails('buildtype': envName)}\" > build/${envName}/BUILD.txt"
+            }
+          }
+        } else {
+          builds[envName] = {
+            println "Build '${envName}' not required, skipped."
+          }
+        }
+      }
+
+      parallel builds
+    }
+
+    // Run E2E and accessibility tests
+
+    stage('Integration') {
+
+      try {
+        parallel (
+          e2e: {
+            dockerImage.inside(args + " -e BUILDTYPE=production") {
+              sh "Xvfb :99 & cd /application && DISPLAY=:99 npm --no-color run test:e2e"
+            }
+          },
+
+          accessibility: {
+            dockerImage.inside(args + " -e BUILDTYPE=production") {
+              sh "Xvfb :98 & cd /application && DISPLAY=:98 npm --no-color run test:accessibility"
+            }
+          }
+        )
+      } finally {
+        step([$class: 'JUnitResultArchiver', testResults: 'logs/nightwatch/**/*.xml'])
+      }
+    }
+
+    stage('Deploy') {
+      if (!isDeployable()) {
+        return
+      }
+
+      def targets = [
+        'jk-deployment-notification': [
+          [ 'build': 'development', 'bucket': 'dev.vets.gov' ],
+        ],
+
+        'master': [
+          [ 'build': 'staging', 'bucket': 'staging.vets.gov' ],
+        ],
+
+        'production': [
+          [ 'build': 'production', 'bucket': 'www.vets.gov' ]
+        ],
+      ][env.BRANCH_NAME]
+
+      def builds = [:]
+
+      for (int i=0; i<targets.size(); i++) {
+        def target = targets.get(i)
+
+        builds[target['bucket']] = {
           dockerImage.inside(args) {
-            sh "cd /application && npm --no-color run build -- --buildtype=${envName}"
-            sh "cd /application && echo \"${buildDetails('buildtype': envName)}\" > build/${envName}/BUILD.txt"
-          }
-        }
-      } else {
-        builds[envName] = {
-          println "Build '${envName}' not required, skipped."
-        }
-      }
-    }
-
-    parallel builds
-  }
-
-  // Run E2E and accessibility tests
-
-  stage('Integration') {
-
-    try {
-      parallel (
-        e2e: {
-          dockerImage.inside(args + " -e BUILDTYPE=production") {
-            sh "Xvfb :99 & cd /application && DISPLAY=:99 npm --no-color run test:e2e"
-          }
-        },
-
-        accessibility: {
-          dockerImage.inside(args + " -e BUILDTYPE=production") {
-            sh "Xvfb :98 & cd /application && DISPLAY=:98 npm --no-color run test:accessibility"
-          }
-        }
-      )
-    } finally {
-      step([$class: 'JUnitResultArchiver', testResults: 'logs/nightwatch/**/*.xml'])
-    }
-  }
-
-  stage('Deploy') {
-
-    if (!isDeployable()) {
-      return
-    }
-
-    def targets = [
-      'kudos-launch': [
-        [ 'build': 'development', 'bucket': 'dev.vets.gov' ],
-      ],
-
-      'master': [
-        [ 'build': 'staging', 'bucket': 'staging.vets.gov' ],
-      ],
-
-      'production': [
-        [ 'build': 'production', 'bucket': 'www.vets.gov' ]
-      ],
-    ][env.BRANCH_NAME]
-
-    def builds = [:]
-
-    for (int i=0; i<targets.size(); i++) {
-      def target = targets.get(i)
-
-      builds[target['bucket']] = {
-        dockerImage.inside(args) {
-          withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'vets-website-s3',
-                              usernameVariable: 'AWS_ACCESS_KEY', passwordVariable: 'AWS_SECRET_KEY']]) {
-          sh "s3-cli sync --acl-public --delete-removed --recursive --region us-gov-west-1 /application/build/${target['build']} s3://${target['bucket']}/"
+            withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'vets-website-s3',
+                                usernameVariable: 'AWS_ACCESS_KEY', passwordVariable: 'AWS_SECRET_KEY']]) {
+            sh "s3-cli sync --acl-public --delete-removed --recursive --region us-gov-west-1 /application/build/${target['build']} s3://${target['bucket']}/"
+            }
           }
         }
       }
+
+      def buildKeys = builds.keySet() as List
+
+      notify """Deploying `vets-website` to `${buildKeys.join(',')}`.
+               |${currentBuild.getAbsoluteUrl()}""".stripMargin()
+
+      parallel builds
+
+      notify """Successfully deployed `vets-website` to `${buildKeys.join(',')}`.
+               |Took ${currentBuild.rawBuild.getDurationString()}""".stripMargin()
     }
 
-    parallel builds
+  } catch (Exception e) {
+    if (isDeployable()) {
+      notify """Failed to deploy `vets-website` to `${env.BRANCH_NAME}`!
+               |${currentBuild.getAbsoluteUrl()}console""".stripMargin(), 'danger'
+    }
+
+    throw e;
   }
 }
