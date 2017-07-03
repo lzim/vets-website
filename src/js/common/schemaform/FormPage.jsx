@@ -6,10 +6,14 @@ import _ from 'lodash/fp';
 import Scroll from 'react-scroll';
 
 import SchemaForm from './SchemaForm';
+import SaveFormLink from './SaveFormLink';
 import ProgressButton from '../components/form-elements/ProgressButton';
 import { focusElement, getActivePages } from '../utils/helpers';
 import { expandArrayPages } from './helpers';
-import { setData } from './actions';
+import { setData, uploadFile } from './actions';
+import { PREFILL_STATUSES, saveErrors, saveInProgressForm } from './save-load-actions';
+
+import { updateLogInUrl } from '../../login/actions';
 
 function focusForm() {
   const legend = document.querySelector('.form-panel legend');
@@ -40,15 +44,19 @@ class FormPage extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.goBack = this.goBack.bind(this);
     this.getEligiblePages = this.getEligiblePages.bind(this);
+    this.handleSave = this.handleSave.bind(this);
   }
 
   componentDidMount() {
-    scrollToTop();
-    focusForm();
+    if (!saveErrors.has(this.props.form.savedStatus)) {
+      scrollToTop();
+      focusForm();
+    }
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.route.pageConfig.pageKey !== this.props.route.pageConfig.pageKey) {
+    if (prevProps.route.pageConfig.pageKey !== this.props.route.pageConfig.pageKey ||
+      _.get('params.index', prevProps) !== _.get('params.index', this.props)) {
       scrollToTop();
       focusForm();
     }
@@ -94,12 +102,23 @@ class FormPage extends React.Component {
     this.props.router.push(pages[page].path);
   }
 
+  handleSave() {
+    const {
+      formId,
+      version,
+      data
+    } = this.props.form;
+    const returnUrl = this.props.location.pathname;
+    this.props.saveInProgressForm(formId, version, returnUrl, data);
+  }
+
   render() {
     const { route, params, form } = this.props;
     let {
       schema,
       uiSchema
-    } = this.props.form.pages[route.pageConfig.pageKey];
+    } = form.pages[route.pageConfig.pageKey];
+
     let data = form.data;
 
     if (route.pageConfig.showPagePerItem) {
@@ -120,6 +139,9 @@ class FormPage extends React.Component {
             data={data}
             schema={schema}
             uiSchema={uiSchema}
+            pagePerItemIndex={params ? params.index : undefined}
+            uploadFile={this.props.uploadFile}
+            prefilled={this.props.form.prefillStatus === PREFILL_STATUSES.success}
             onChange={this.onChange}
             onSubmit={this.onSubmit}>
           <div className="row form-progress-buttons schemaform-buttons">
@@ -138,6 +160,16 @@ class FormPage extends React.Component {
                   afterText="»"/>
             </div>
           </div>
+          {(!form.disableSave && __BUILDTYPE__ !== 'production') && <div className="row">
+            <div className="small-12 columns">
+              <SaveFormLink
+                  trackingPrefix={form.trackingPrefix}
+                  saveForm={this.handleSave}
+                  savedStatus={form.savedStatus}
+                  user={this.props.user}
+                  onUpdateLoginUrl={this.props.updateLogInUrl}/>
+            </div>
+          </div>}
         </SchemaForm>
       </div>
     );
@@ -146,12 +178,16 @@ class FormPage extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    form: state.form
+    form: state.form,
+    user: state.user
   };
 }
 
 const mapDispatchToProps = {
-  setData
+  setData,
+  saveInProgressForm,
+  updateLogInUrl,
+  uploadFile
 };
 
 FormPage.propTypes = {

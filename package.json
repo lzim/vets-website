@@ -5,7 +5,7 @@
   "scripts": {
     "build": "node script/build.js",
     "heroku-serve": "http-server",
-    "heroku-postbuild": "node script/build.js --entry no-react",
+    "heroku-postbuild": "node script/build.js --entry no-react,style",
     "lint": "npm run lint:js && npm run lint:sass",
     "lint:changed": "npm run lint:js:changed && npm run lint:sass",
     "lint:js": "eslint --quiet --ext .js --ext .jsx .",
@@ -22,12 +22,12 @@
     "test:coverage": "NODE_ENV=test nyc --all --reporter=lcov --reporter=text --reporter=html mocha --no-color --recursive 'test/**/*.unit.spec.js?(x)' ",
     "test:unit:edu": "BABEL_ENV=test mocha --recursive 'test/edu-benefits/**/*.unit.spec.js?(x)' ",
     "test:unit:hca": "BABEL_ENV=test mocha --recursive 'test/hca/**/*.unit.spec.js?(x)' ",
-    "test:unit:hca-rjsf": "BABEL_ENV=test mocha --recursive 'test/hca-rjsf/**/*.unit.spec.js?(x)' || echo 'Unit tests failed.'",
     "test:unit:msg": "BABEL_ENV=test mocha --recursive 'test/messaging/**/*.unit.spec.js?(x)' ",
     "test:unit:hr": "BABEL_ENV=test mocha --recursive 'test/health-records/**/*.unit.spec.js?(x)' ",
     "test:unit:rx": "BABEL_ENV=test mocha --recursive 'test/rx/**/*.unit.spec.js?(x)' ",
     "test:unit:gi": "BABEL_ENV=test mocha --recursive 'test/gibct/**/*.unit.spec.js?(x)' ",
     "test:unit:login": "BABEL_ENV=test mocha --recursive 'test/login/**/*.unit.spec.js?(x)' ",
+    "test:unit:db": "BABEL_ENV=test mocha --recursive 'test/disability-benefits/**/*.unit.spec.js?(x)' ",
     "test:watch": "BABEL_ENV=test mocha --watch --recursive 'test/**/*.unit.spec.js?(x)' ",
     "watch": "node script/build.js --watch",
     "watch:static": "npm run watch -- --entry no-react"
@@ -107,7 +107,7 @@
     "libxmljs": "^0.18.0",
     "lodash": "^4.5.1",
     "lodash-deep": "^2.0.0",
-    "mapbox": "^1.0.0-beta5",
+    "mapbox": "1.0.0-beta7",
     "metalsmith": "^2.1.0",
     "metalsmith-archive": "^0.1.1",
     "metalsmith-assets": "^0.1.0",
@@ -179,7 +179,7 @@
     "webpack": "^2.4.1",
     "webpack-manifest-plugin": "^1.1.0",
     "webpack-md5-hash": "0.0.5",
-    "whatwg-fetch": "http://registry.npmjs.org/whatwg-fetch/-/whatwg-fetch-1.0.0.tgz",
+    "whatwg-fetch": "^2.0.3",
     "winston": "^2.2.0"
   },
   "optionalDependencies": {
@@ -193,6 +193,6 @@
   "dependencies": {
     "camelcase-keys-recursive": "^0.8.2",
     "reselect": "^2.5.4",
-    "vets-json-schema": "https://github.com/department-of-veterans-affairs/vets-json-schema.git#8d6b286a55784cc99328aa71436833272c46d8a8"
+    "vets-json-schema": "https://github.com/department-of-veterans-affairs/vets-json-schema.git#d4f32a9477cbdd53cdaa610ece8002e821f04734"
   }
 }

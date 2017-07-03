@@ -32,6 +32,7 @@ import * as personId from '../../../common/schemaform/definitions/personId';
 import dateRangeUi from '../../../common/schemaform/definitions/dateRange';
 import fullNameUi from '../../../common/schemaform/definitions/fullName';
 import nonMilitaryJobsUi from '../../../common/schemaform/definitions/nonMilitaryJobs';
+import GetFormHelp from '../../components/GetFormHelp';
 import postHighSchoolTrainingsUi from '../../definitions/postHighSchoolTrainings';
 
 import contactInformationPage from '../../pages/contactInformation';
@@ -44,6 +45,7 @@ import additionalBenefitsPage from '../../pages/additionalBenefits';
 import IntroductionPage from '../components/IntroductionPage';
 import ConfirmationPage from '../containers/ConfirmationPage';
 import benefitSelectionWarning from '../components/BenefitSelectionWarning';
+import createNonRequiredFullName from '../../../common/schemaform/definitions/nonRequiredFullName';
 
 const {
   benefit,
@@ -71,19 +73,21 @@ const {
   ssn
 } = fullSchema5490.definitions;
 
-const nonRequiredFullName = _.assign(fullName, {
-  required: []
-});
+const nonRequiredFullName = createNonRequiredFullName(fullName);
 
 const formConfig = {
   urlPrefix: '/5490/',
   submitUrl: '/v0/education_benefits_claims/5490',
   trackingPrefix: 'edu-5490-',
+  formId: '5490',
+  version: 0,
+  disableSave: true,
   transformForSubmit: transform,
   introduction: IntroductionPage,
   confirmation: ConfirmationPage,
   title: 'Apply for education benefits as an eligible dependent',
   subTitle: 'Form 22-5490',
+  getHelp: GetFormHelp,
   defaultDefinitions: {
     date,
     educationType,

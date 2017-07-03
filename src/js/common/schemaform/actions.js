@@ -1,4 +1,5 @@
 import Raven from 'raven-js';
+import _ from 'lodash/fp';
 import { transformForSubmit } from './helpers';
 import environment from '../helpers/environment.js';
 
@@ -46,6 +47,7 @@ export function setSubmitted(response) {
   };
 }
 
+
 export function submitForm(formConfig, form) {
   const body = formConfig.transformForSubmit
     ? formConfig.transformForSubmit(formConfig, form)
@@ -59,7 +61,6 @@ export function submitForm(formConfig, form) {
 
     const fetchOptions = {
       method: 'POST',
-      mode: 'cors',
       headers: {
         'Content-Type': 'application/json',
         'X-Key-Inflection': 'camel'
@@ -81,15 +82,83 @@ export function submitForm(formConfig, form) {
         return res.json();
       }
 
-      return Promise.reject(new Error(res.statusText));
+      return Promise.reject(new Error(`vets_server_error: ${res.statusText}`));
     })
     .then(resp => dispatch(setSubmitted(resp)))
     .catch(error => {
-      Raven.captureException(error);
-      window.dataLayer.push({
-        event: `${formConfig.trackingPrefix}-submission-failed`,
+      // overly cautious
+      const errorMessage = _.get('message', error);
+      const clientError = errorMessage && !errorMessage.startsWith('vets_server_error');
+      Raven.captureException(error, {
+        extra: {
+          clientError
+        }
       });
-      dispatch(setSubmission('status', 'error'));
+      window.dataLayer.push({
+        event: `${formConfig.trackingPrefix}-submission-failed${clientError ? '-client' : ''}`,
+      });
+      dispatch(setSubmission('status', clientError ? 'clientError' : 'error'));
+    });
+  };
+}
+
+export function uploadFile(file, filePath, uiOptions = {}) {
+  return (dispatch, getState) => {
+    if (file.size > uiOptions.maxSize) {
+      dispatch(
+        setData(_.set(filePath, {
+          errorMessage: 'File is too large to be uploaded'
+        }, getState().form.data))
+      );
+
+      return Promise.reject();
+    }
+
+    if (file.size < uiOptions.minSize) {
+      dispatch(
+        setData(_.set(filePath, {
+          errorMessage: 'File is too small to be uploaded'
+        }, getState().form.data))
+      );
+
+      return Promise.reject();
+    }
+
+    dispatch(
+      setData(_.set(filePath, { uploading: true }, getState().form.data))
+    );
+
+    const payload = new FormData();
+    payload.append('file', file);
+    payload.append('form_id', getState().form.formId);
+
+    return fetch(`${environment.API_URL}${uiOptions.endpoint}`, {
+      method: 'POST',
+      headers: {
+        'X-Key-Inflection': 'camel'
+      },
+      body: payload
+    }).then(resp => {
+      if (resp.ok) {
+        return resp.json();
+      }
+
+      return Promise.reject(new Error(`vets_upload_error: ${resp.statusText}`));
+    }).then(fileInfo => {
+      dispatch(
+        setData(_.set(filePath, {
+          name: fileInfo.data.attributes.name,
+          size: fileInfo.data.attributes.size,
+          confirmationCode: fileInfo.data.attributes.confirmationCode
+        }, getState().form.data))
+      );
+    }).catch(error => {
+      dispatch(
+        setData(_.set(filePath, {
+          errorMessage: error.message.replace('vets_upload_error: ', '')
+        }, getState().form.data))
+      );
+      Raven.captureException(error);
     });
   };
 }

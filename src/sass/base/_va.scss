@@ -186,14 +186,7 @@ hr {
 // Using this selector makes it easier for the content team to write content
 [href^=http],
 [rel=external] {
-  // Using longhand properties instead of the shorthand to limit
-  // risk and impact of side effects
-  background-image: url(/img/icons/exit-icon.png);
-  background-position: 100% 50%;
-  background-repeat: no-repeat;
-  background-size: 1em auto;
-  padding-right: 1.2em;
-  position: relative;
+  @include exit-icon;
 }
 
 // Logo and Header
@@ -1394,6 +1387,10 @@ pre[class*="language-"]  {
   padding: 2em 0;
 }
 
+.react-container {
+  padding: 2em 0;
+}
+
 p.info-message {
   font-size: 1.5em;
 }
@@ -1437,4 +1434,40 @@ p.info-message {
 .usa-sidenav-sub_list {
   padding-left: 0;
   list-style: none;
+}
+
+.vertical-list-group {
+  list-style-type: none;
+}
+
+.vertical-list-group .list-group-item{
+  border: none;
+  border-left: 3px solid $color-gray-light;
+  box-sizing: border-box;
+  border-radius: 0;
+  padding-left: 20px;
+  padding-right: 0px;
+  padding-bottom: 20px;
+  padding-top: 0px;
+
+  &:last-child {
+    border: none;
+  }
+}
+
+.vertical-list-group .list-group-item:last-child{
+  border-left: 3px solid transparent;
+  padding-bottom: 0;
+}
+.vertical-list-group .list-group-item::before {
+  border-radius: 50%;
+  background-color: $color-gray-dark;
+  content: "";
+  display: inline-block;
+  float: left;
+  height: 15px;
+  line-height: 15px;
+  margin-left: -29px;
+  text-align: center;
+  width: 15px;
 }
