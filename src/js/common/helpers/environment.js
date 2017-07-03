@@ -3,7 +3,7 @@ const _Environments = {
   staging: { API_URL: 'https://staging-api.vets.gov', BASE_URL: 'https://staging.vets.gov' },
   development: { API_URL: (process.env.API_URL || 'https://dev-api.vets.gov'), BASE_URL: (process.env.BASE_URL || 'https://dev.vets.gov') },
   local: { API_URL: `http://${location.hostname}:3000`, BASE_URL: `http://${location.hostname}:3001` },
-  localdev: { API_URL: 'https://dev-api.vets.gov', BASE_URL: `http://${location.hostname}:3001` }, // update API_URL to point to a vets-api review instance
+  localdev: { API_URL: 'http://d74b1540e6290e2310c55deec758dac6-api.review.vetsgov-internal', BASE_URL: `http://${location.hostname}:3001` }, // update API_URL to point to a vets-api review instance
   e2e: { API_URL: `http://localhost:${process.env.API_PORT || 3000}`, BASE_URL: `http://localhost:${process.env.WEB_PORT || 3333}` }
 };
 
@@ -11,8 +11,7 @@ function getEnvironment() {
   let platform;
 
   if (location.port === '3001') {
-    platform = 'local';
-  } else if (location.port === '3002') {
+    // platform = 'local';
     platform = 'localdev';
   } else if (location.port === `${process.env.WEB_PORT || 3333}`) {
     platform = 'e2e';
