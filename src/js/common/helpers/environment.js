@@ -3,7 +3,7 @@ const _Environments = {
   staging: { API_URL: 'https://staging-api.vets.gov', BASE_URL: 'https://staging.vets.gov' },
   development: { API_URL: (process.env.API_URL || 'https://dev-api.vets.gov'), BASE_URL: (process.env.BASE_URL || 'https://dev.vets.gov') },
   local: { API_URL: `http://${location.hostname}:3000`, BASE_URL: `http://${location.hostname}:3001` },
-  localdev: { API_URL: 'http://d74b1540e6290e2310c55deec758dac6-api.review.vetsgov-internal', BASE_URL: `http://${location.hostname}:3001` }, // update API_URL to point to a vets-api review instance
+  localdev: { API_URL: 'http://c46e5c5ce65dd599310fb8c85f157d6859a59ab7-api.review.vetsgov-internal', BASE_URL: `http://${location.hostname}:3001` }, // update API_URL to point to a vets-api review instance
   e2e: { API_URL: `http://localhost:${process.env.API_PORT || 3000}`, BASE_URL: `http://localhost:${process.env.WEB_PORT || 3333}` }
 };
 
