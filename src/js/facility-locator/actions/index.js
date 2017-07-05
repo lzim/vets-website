@@ -29,7 +29,8 @@ export function getDrivingTimes(destinationData, bounds) {
 
   destinations.unshift([centerLng, centerLat]);
 
-  // mapboxClient.getDistances(destinations, {
+  // call Mapbox Matrix API here
+  // mapboxClient.getMatrix(destinations, {
   //   profile: 'driving'
   // }, (err, res) => {
   //   console.log(res);
