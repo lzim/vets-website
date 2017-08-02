@@ -399,7 +399,7 @@ const formConfig = {
               'ui:title': 'Purple Heart award recipient',
             },
             isFormerPow: {
-              'ui:title': 'Former prisoner of war',
+              'ui:title': 'Former Prisoner of War',
             },
             postNov111998Combat: {
               'ui:title': 'Served in combat theater of operations after November 11, 1998',
@@ -592,6 +592,9 @@ const formConfig = {
                 itemName: 'Child',
                 hideTitle: true,
                 viewField: ChildView
+              },
+              'ui:errorMessages': {
+                minItems: 'You must add at least one child.'
               }
             }
           },
@@ -600,7 +603,9 @@ const formConfig = {
             required: ['view:reportChildren'],
             properties: {
               'view:reportChildren': { type: 'boolean' },
-              children
+              children: _.assign(children, {
+                minItems: 1
+              })
             }
           }
         },
@@ -616,10 +621,10 @@ const formConfig = {
               'ui:title': 'Veteran gross annual income from employment'
             },
             veteranNetIncome: {
-              'ui:title': 'Veteran Net Income from your Farm, Ranch, Property or Business'
+              'ui:title': 'Veteran net income from your farm, ranch, property or business'
             },
             veteranOtherIncome: {
-              'ui:title': 'Veteran Other Income Amount'
+              'ui:title': 'Veteran other income amount'
             },
             'view:spouseIncome': {
               'ui:title': 'Spouse income',
@@ -632,11 +637,11 @@ const formConfig = {
                 'ui:required': (formData) => formData.maritalStatus && (formData.maritalStatus.toLowerCase() === 'married' || formData.maritalStatus.toLowerCase() === 'separated')
               },
               spouseNetIncome: {
-                'ui:title': 'Spouse Net Income from your Farm, Ranch, Property or Business',
+                'ui:title': 'Spouse net income from your farm, ranch, property or business',
                 'ui:required': (formData) => formData.maritalStatus && (formData.maritalStatus.toLowerCase() === 'married' || formData.maritalStatus.toLowerCase() === 'separated')
               },
               spouseOtherIncome: {
-                'ui:title': 'Spouse Other Income Amount',
+                'ui:title': 'Spouse other income amount',
                 'ui:required': (formData) => formData.maritalStatus && (formData.maritalStatus.toLowerCase() === 'married' || formData.maritalStatus.toLowerCase() === 'separated')
               }
             },
@@ -754,12 +759,15 @@ const formConfig = {
                 expandUnder: 'isCoveredByHealthInsurance',
                 viewField: InsuranceProviderView
               },
+              'ui:errorMessages': {
+                minItems: 'You need to at least one provider.'
+              },
               items: {
                 insuranceName: {
                   'ui:title': 'Name of provider'
                 },
                 insurancePolicyHolderName: {
-                  'ui:title': 'Name of policy holder'
+                  'ui:title': 'Name of policyholder'
                 },
                 insurancePolicyNumber: {
                   'ui:title': 'Policy number (either this or the group code is required)',
