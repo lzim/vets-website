@@ -23,18 +23,23 @@ export function getDrivingTimes(destinationData, bounds) {
   const centerLng = (bounds[0] + bounds[2]) / 2;
   const centerLat = (bounds[1] + bounds[3]) / 2;
 
-  const destinations = destinationData.map(d => {
-    return [d.attributes.long, d.attributes.lat];
+  const destinations = destinationData.map(d => ({
+    longitude: d.attributes.long,
+    latitude: d.attributes.lat
+  }));
+
+  destinations.unshift({
+    longitude: centerLng,
+    latitude: centerLat
   });
 
-  destinations.unshift([centerLng, centerLat]);
-
-  // call Mapbox Matrix API here
-  // mapboxClient.getMatrix(destinations, {
-  //   profile: 'driving'
-  // }, (err, res) => {
-  //   console.log(res);
-  // });
+  /*
+  mapboxClient.getMatrix(destinations, {
+    profile: 'driving'
+  }, (err, res) => {
+    console.log(res);
+  });
+  */
 }
 
 export function fetchVAFacility(id, facility = null) {
