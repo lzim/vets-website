@@ -73,7 +73,6 @@ Also, if you haven't used all of your Post-9/11 GI Bill benefits, you may be abl
 ### Ready to apply?
 
 <div class="wizard-anchor">
-{% include "content/pages/education/wizard.html" %}
 </div>
 
 [Learn about the application process](/education/apply). 
