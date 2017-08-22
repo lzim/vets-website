@@ -34,9 +34,6 @@
 <meta content="{{ tag }}" property="article:tag">
 {% endfor %}
 {% endif %}
-{% if title == 'Education Benefits Application Process' or title == 'Education Benefits Eligibility' %}
-<link rel="import" href="/education/wizard/index.html">
-{% endif %}
 {% if title === 'Home' %}
 <title>Vets.gov</title>
 {% else %}
@@ -87,6 +84,9 @@ window.webpackManifest = 'CHUNK_MANIFEST_PLACEHOLDER';
 <script src="/generated/no-react.entry.js"></script>
 {% endif %}
 
+{% if title == 'Education Benefits Application Process' or title == 'Education Benefits Eligibility' %}
+{% include "content/pages/education/wizard.html" %}
+{% endif %}
 </head>
 <body class="{{ body_class }}">
 
