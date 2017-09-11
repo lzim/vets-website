@@ -26,6 +26,8 @@ class History extends React.Component {
     this.formattedSortParam = this.formattedSortParam.bind(this);
     this.handleSort = this.handleSort.bind(this);
     this.handlePageSelect = this.handlePageSelect.bind(this);
+    this.renderContent = this.renderContent.bind(this);
+    this.renderPrescriptions = this.renderPrescriptions.bind(this);
     this.scrollToTop = this.scrollToTop.bind(this);
   }
 
@@ -101,85 +103,97 @@ class History extends React.Component {
     });
   }
 
-  render() {
-    const items = this.props.prescriptions;
-    let content;
+  renderPrescriptions() {
+    const {
+      page,
+      pages,
+      prescriptions,
+      sort: currentSort
+    } = this.props;
 
-    if (this.props.loading) {
-      content = <LoadingIndicator message="Loading your prescriptions..."/>;
-    } else if (items) {
-      const currentSort = this.props.sort;
+    const fields = [
+      { label: 'Last submit date', value: 'refillSubmitDate' },
+      { label: 'Last fill date', value: 'refillDate' },
+      { label: 'Prescription', value: 'prescriptionName' },
+      { label: 'Prescription status', value: 'refillStatus', nonSortable: true },
+    ];
 
-      const fields = [
-        { label: 'Last submit date', value: 'refillSubmitDate' },
-        { label: 'Last fill date', value: 'refillDate' },
-        { label: 'Prescription', value: 'prescriptionName' },
-        { label: 'Prescription status', value: 'refillStatus', nonSortable: true },
-      ];
+    const data = prescriptions.map(item => {
+      const attrs = item.attributes;
+      const status = rxStatuses[attrs.refillStatus];
 
-      const data = items.map(item => {
-        const attrs = item.attributes;
-        const status = rxStatuses[attrs.refillStatus];
+      return {
+        id: item.id,
 
-        return {
-          id: item.id,
+        refillSubmitDate: formatDate(attrs.refillSubmitDate),
 
-          refillSubmitDate: formatDate(attrs.refillSubmitDate),
+        refillDate: formatDate(attrs.refillDate, { validateInPast: true }),
 
-          refillDate: formatDate(attrs.refillDate, { validateInPast: true }),
+        prescriptionName: (
+          <Link to={`/${attrs.prescriptionId}`}>
+            {attrs.prescriptionName}
+          </Link>
+        ),
 
-          prescriptionName: (
-            <Link to={`/${attrs.prescriptionId}`}>
-              {attrs.prescriptionName}
-            </Link>
-          ),
+        refillStatus: (
+          <GlossaryLink
+            term={status}
+            onClick={this.props.openGlossaryModal}/>
+        )
+      };
+    });
 
-          refillStatus: (
-            <GlossaryLink
-              term={status}
-              onClick={this.props.openGlossaryModal}/>
-          )
-        };
-      });
-
-      content = (
-        <div>
-          <p className="rx-tab-explainer">Your VA prescription refill history</p>
-          <div className="show-for-small-only">
-            <SortMenu
-              onClick={this.handleSort}
-              onChange={this.handleSort}
-              options={fields}
-              selected={currentSort}/>
-          </div>
-          <SortableTable
-            className="usa-table-borderless va-table-list rx-table rx-table-list"
-            currentSort={currentSort}
-            data={data}
-            fields={fields}
-            onSort={this.handleSort}/>
-          <Pagination
-            onPageSelect={this.handlePageSelect}
-            page={this.props.page}
-            pages={this.props.pages}/>
+    return (
+      <div>
+        <p className="rx-tab-explainer">Your VA prescription refill history</p>
+        <div className="show-for-small-only">
+          <SortMenu
+            onClick={this.handleSort}
+            onChange={this.handleSort}
+            options={fields}
+            selected={currentSort}/>
         </div>
-      );
-    } else {
-      content = (
-        <p className="rx-tab-explainer rx-loading-error">
-          We couldn’t retrieve your prescriptions.
-          Please refresh this page or try again later. If this problem persists, please call the Vets.gov Help Desk
-          at 1-855-574-7286, Monday ‒ Friday, 8:00 a.m. ‒ 8:00 p.m. (ET).
-        </p>
-      );
+        <SortableTable
+          className="usa-table-borderless va-table-list rx-table rx-table-list"
+          currentSort={currentSort}
+          data={data}
+          fields={fields}
+          onSort={this.handleSort}/>
+        <Pagination
+          onPageSelect={this.handlePageSelect}
+          page={page}
+          pages={pages}/>
+      </div>
+    );
+  }
+
+  renderContent() {
+    const { loading, prescriptions } = this.props;
+
+    if (loading) {
+      return <LoadingIndicator message="Loading your prescriptions..."/>;
     }
 
+    if (prescriptions) {
+      return this.renderPrescriptions();
+    }
+
+    return (
+      <p className="rx-tab-explainer rx-loading-error">
+        We couldn’t retrieve your prescriptions.
+        Please refresh this page or try again later. If this problem persists, please call the Vets.gov Help Desk
+        at 1-855-574-7286, Monday ‒ Friday, 8:00 a.m. ‒ 8:00 p.m. (ET).
+      </p>
+    );
+  }
+
+  render() {
     return (
       <ScrollElement
         id="rx-history"
         name="history"
         className="va-tab-content">
-        {content}
+        {this.renderContent()}
       </ScrollElement>
     );
   }

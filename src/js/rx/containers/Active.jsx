@@ -27,6 +27,9 @@ class Active extends React.Component {
 
     this.handleSort = this.handleSort.bind(this);
     this.pushAnalyticsEvent = this.pushAnalyticsEvent.bind(this);
+    this.renderContent = this.renderContent.bind(this);
+    this.renderPrescriptions = this.renderPrescriptions.bind(this);
+    this.renderViewSwitch = this.renderViewSwitch.bind(this);
 
     this.checkWindowSize = _.debounce(() => {
       const toggleDisplayStyle = window.getComputedStyle(this.viewToggle, null).getPropertyValue('display');
@@ -128,57 +131,63 @@ class Active extends React.Component {
     );
   }
 
-  render() {
-    let content;
+  renderPrescriptions() {
+    const { prescriptions, sort: currentSort } = this.props;
+    let prescriptionsView;
 
-    if (this.props.loading) {
-      content = <LoadingIndicator message="Loading your prescriptions..."/>;
-    } else if (this.props.prescriptions) {
-      const currentSort = this.props.sort;
-      let prescriptionsView;
-
-      if (this.state.view === 'list') {
-        prescriptionsView = (
-          <PrescriptionTable
-            handleSort={this.handleSort}
-            currentSort={currentSort}
-            items={this.props.prescriptions}
-            refillModalHandler={this.props.openRefillModal}
-            glossaryModalHandler={this.props.openGlossaryModal}/>
-        );
-      } else {
-        prescriptionsView = (
-          <PrescriptionList
-            items={this.props.prescriptions}
-            // If we’re sorting by facility, tell PrescriptionList to group 'em.
-            grouped={currentSort.value === 'facilityName'}
-            handleSort={this.handleSort}
-            currentSort={currentSort}
-            refillModalHandler={this.props.openRefillModal}
-            glossaryModalHandler={this.props.openGlossaryModal}/>
-        );
-      }
-
-      content = (
-        <div>
-          <p className="rx-tab-explainer">Your active VA prescriptions</p>
-          {this.renderViewSwitch()}
-          {prescriptionsView}
-        </div>
+    if (this.state.view === 'list') {
+      prescriptionsView = (
+        <PrescriptionTable
+          handleSort={this.handleSort}
+          currentSort={currentSort}
+          items={prescriptions}
+          refillModalHandler={this.props.openRefillModal}
+          glossaryModalHandler={this.props.openGlossaryModal}/>
       );
     } else {
-      content = (
-        <p className="rx-tab-explainer rx-loading-error">
-          We couldn’t retrieve your prescriptions.
-          Please refresh this page or try again later. If this problem persists, please call the Vets.gov Help Desk
-          at 1-855-574-7286, Monday ‒ Friday, 8:00 a.m. ‒ 8:00 p.m. (ET).
-        </p>
+      prescriptionsView = (
+        <PrescriptionList
+          items={prescriptions}
+          // If we’re sorting by facility, tell PrescriptionList to group 'em.
+          grouped={currentSort.value === 'facilityName'}
+          handleSort={this.handleSort}
+          currentSort={currentSort}
+          refillModalHandler={this.props.openRefillModal}
+          glossaryModalHandler={this.props.openGlossaryModal}/>
       );
     }
 
     return (
+      <div>
+        <p className="rx-tab-explainer">Your active VA prescriptions</p>
+        {this.renderViewSwitch()}
+        {prescriptionsView}
+      </div>
+    );
+  }
+
+  renderContent() {
+    const { loading, prescriptions } = this.props;
+
+    if (loading) {
+      return <LoadingIndicator message="Loading your prescriptions..."/>;
+    } else if (prescriptions) {
+      return this.renderPrescriptions();
+    }
+
+    return (
+      <p className="rx-tab-explainer rx-loading-error">
+        We couldn’t retrieve your prescriptions.
+        Please refresh this page or try again later. If this problem persists, please call the Vets.gov Help Desk
+        at 1-855-574-7286, Monday ‒ Friday, 8:00 a.m. ‒ 8:00 p.m. (ET).
+      </p>
+    );
+  }
+
+  render() {
+    return (
       <div id="rx-active" className="va-tab-content">
-        {content}
+        {this.renderContent()}
       </div>
     );
   }
@@ -197,9 +206,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
+  loadPrescriptions,
   openGlossaryModal,
   openRefillModal,
-  loadPrescriptions,
   sortPrescriptions
 };
 
