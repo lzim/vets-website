@@ -111,6 +111,16 @@ class History extends React.Component {
       sort: currentSort
     } = this.props;
 
+    if (!prescriptions.length) {
+      return (
+        <p className="rx-tab-explainer rx-loading-error">
+          It looks like you have no past VA prescriptions in your records.
+          If you think this is a mistake, please contact your health care team and ask them to check your prescription records.
+          If you need more help, please call the Vets.gov Help Desk at 1-855-571-7286 (TTY: 1-800-829-4833).
+        </p>
+      );
+    }
+
     const fields = [
       { label: 'Last submit date', value: 'refillSubmitDate' },
       { label: 'Last fill date', value: 'refillDate' },

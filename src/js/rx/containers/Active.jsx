@@ -135,6 +135,16 @@ class Active extends React.Component {
     const { prescriptions, sort: currentSort } = this.props;
     let prescriptionsView;
 
+    if (!prescriptions.length) {
+      return (
+        <p className="rx-tab-explainer rx-loading-error">
+          It looks like you don’t have any VA prescriptions to refill right now.
+          If you think this is a mistake, please contact your VA health care team and ask them to check your prescription records.
+          If you need more help, please call the Vets.gov Help Desk at 1-855-571-7286 (TTY: 1-800-829-4833).
+        </p>
+      );
+    }
+
     if (this.state.view === 'list') {
       prescriptionsView = (
         <PrescriptionTable
