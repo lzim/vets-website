@@ -141,6 +141,7 @@ class Active extends React.Component {
           It looks like you don’t have any VA prescriptions to refill right now.
           If you think this is a mistake, please contact your VA health care team and ask them to check your prescription records.
           If you need more help, please call the Vets.gov Help Desk at 1-855-571-7286 (TTY: 1-800-829-4833).
+          We’re here Monday–Friday, 8:00 a.m.–8:00 p.m. (ET).
         </p>
       );
     }
@@ -189,7 +190,8 @@ class Active extends React.Component {
       <p className="rx-tab-explainer rx-loading-error">
         We couldn’t retrieve your prescriptions.
         Please refresh this page or try again later. If this problem persists, please call the Vets.gov Help Desk
-        at 1-855-574-7286, Monday ‒ Friday, 8:00 a.m. ‒ 8:00 p.m. (ET).
+        at 1-855-574-7286 (TTY: 1-800-829-4833).
+        We’re here Monday–Friday, 8:00 a.m.–8:00 p.m. (ET).
       </p>
     );
   }
