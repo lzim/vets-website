@@ -7,13 +7,11 @@ node('vetsgov-general-purpose') {
   }
 
   stage('Debug') {
-    steps {
-      script {
-          echo "Branch: ${env.BRANCH_NAME}"
+    script {
+      echo "Branch: ${env.BRANCH_NAME}"
 
-          if ( currentBuild.nextBuild ) {
-            echo "Next build: ${currentBuild.nextBuild.getId()}"
-          }
+      if ( currentBuild.nextBuild ) {
+        echo "Next build: ${currentBuild.nextBuild.getId()}"
       }
     }
   }
