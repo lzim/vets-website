@@ -5,7 +5,7 @@ def isReviewable = {
     env.BRANCH_NAME != 'master'
 }
 
-env.CONCURRENCY = 5
+env.CONCURRENCY = 10
 
 def isDeployable = {
   (env.BRANCH_NAME == 'master' ||
