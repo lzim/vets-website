@@ -8,6 +8,7 @@ import {
   UPDATE_LOGOUT_URL,
   UPDATE_MULTIFACTOR_URL,
   UPDATE_SEARCH_HELP_USER_MENU,
+  TOGGLE_LOGIN_OVERLAY,
   LOG_OUT
 } from '../actions';
 
@@ -21,7 +22,8 @@ const initialState = {
     search: false,
     help: false,
     account: false
-  }
+  },
+  showOverlay: false
 };
 
 function closeAllMenus(menuState) {
@@ -60,6 +62,9 @@ function loginStuff(state = initialState, action) {
     case UPDATE_SEARCH_HELP_USER_MENU:
       closeAllMenus(state);
       return _.set(`utilitiesMenuIsOpen.${action.menu}`, action.isOpen, state);
+
+    case TOGGLE_LOGIN_OVERLAY:
+      return _.set('showOverlay', action.show, state);
 
     default:
       return state;

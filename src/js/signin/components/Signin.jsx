@@ -18,10 +18,14 @@ class Signin extends React.Component {
 
   checkLoggedInStatus(loggedIn) {
     if (this.props.currentlyLoggedIn || loggedIn) {
-      const nextParams = new URLSearchParams(window.location.search);
-      const nextPath = nextParams.get('next');
+      if (this.props.onLoggedIn) {
+        this.props.onLoggedIn();
+      } else {
+        const nextParams = new URLSearchParams(window.location.search);
+        const nextPath = nextParams.get('next');
 
-      return window.location.replace(nextPath || '/');
+        return window.location.replace(nextPath || '/');
+      }
     }
 
     return window.dataLayer.push({ event: 'login-prompt-displayed' });
@@ -143,6 +147,7 @@ Signin.propTypes = {
   currentlyLoggedIn: PropTypes.bool,
   handleLogin: PropTypes.func,
   handleSignup: PropTypes.func,
+  onLoggedIn: PropTypes.func
 };
 
 export default Signin;

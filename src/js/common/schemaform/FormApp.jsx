@@ -15,6 +15,7 @@ import {
   fetchInProgressForm
 } from './save-load-actions';
 import LoadingIndicator from '../components/LoadingIndicator';
+import LoginContainer from '../components/authentication/LoginContainer';
 
 import { isInProgress } from '../utils/helpers';
 
@@ -187,7 +188,7 @@ class FormApp extends React.Component {
 
 
     return (
-      <div>
+      <LoginContainer>
         <div className="row">
           <Element name="topScrollElement"/>
           <div className="usa-width-two-thirds medium-8 columns">
@@ -204,7 +205,7 @@ class FormApp extends React.Component {
           {!!GetFormHelp && <GetFormHelp/>}
         </AskVAQuestions>}
         <span className="js-test-location hidden" data-location={trimmedPathname} hidden></span>
-      </div>
+      </LoginContainer>
     );
   }
 }

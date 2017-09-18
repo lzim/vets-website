@@ -39,11 +39,11 @@ class Main extends React.Component {
     this.getVerifyUrl(!this.props.login.currentlyLoggedIn && nextProps.login.currentlyLoggedIn);
   }
 
-  componentWillUnmount() {
-    this.loginUrlRequest.abort();
-    this.verifyUrlRequest.abort();
-    this.logoutUrlRequest.abort();
-  }
+  // componentWillUnmount() {
+  //   this.loginUrlRequest.abort();
+  //   this.verifyUrlRequest.abort();
+  //   this.logoutUrlRequest.abort();
+  // }
 
   getLoginUrls() {
     this.loginUrlRequest = getLoginUrls(this.props.onUpdateLoginUrls);
@@ -60,7 +60,9 @@ class Main extends React.Component {
     }).then(response => {
       return response.json();
     }).then(json => {
-      this.props.onUpdateVerifyUrl(json.identity_proof_url);
+      if (json.identity_proof_url) {
+        this.props.onUpdateVerifyUrl(json.identity_proof_url);
+      }
     });
   }
 
@@ -139,6 +141,7 @@ class Main extends React.Component {
 
     return (
       <Signin
+        onLoggedIn={this.props.onLoggedIn}
         currentlyLoggedIn={currentlyLoggedIn}
         handleSignup={this.handleSignup}
         handleLogin={this.handleLogin}/>

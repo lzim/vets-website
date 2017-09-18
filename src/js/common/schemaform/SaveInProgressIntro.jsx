@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import { createSelector } from 'reselect';
 import moment from 'moment';
 
-import { updateLogInUrls } from '../../login/actions';
+import { updateLogInUrls, toggleLoginOverlay } from '../../login/actions';
 import { fetchInProgressForm, removeInProgressForm } from './save-load-actions';
-import SignInLink from '../components/SignInLink';
 import LoadingIndicator from '../components/LoadingIndicator';
 import FormStartControls from './FormStartControls';
 
@@ -50,7 +49,7 @@ export default class SaveInProgressIntro extends React.Component {
         <div>
           <div className="usa-alert usa-alert-info schemaform-sip-alert">
             <div className="usa-alert-body">
-              You can save this form, and come back later to finish filling it out. To save your form in progress, please <SignInLink isLoggedIn={this.props.user.login.currentlyLoggedIn} loginUrl={this.props.user.login.loginUrls.idme} onUpdateLoginUrl={this.props.updateLogInUrls}>sign in</SignInLink>.
+              You can save this form, and come back later to finish filling it out. To save your form in progress, please <button className="va-button-link" onClick={() => this.props.toggleLoginOverlay(true)}>Sign In</button>.
             </div>
           </div>
           <br/>
@@ -134,5 +133,6 @@ export const introSelector = createSelector(
 export const introActions = {
   fetchInProgressForm,
   removeInProgressForm,
-  updateLogInUrls
+  updateLogInUrls,
+  toggleLoginOverlay
 };

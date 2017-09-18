@@ -2,7 +2,6 @@ import React from 'react';
 import Scroll from 'react-scroll';
 import PropTypes from 'prop-types';
 
-import LoginModal from '../components/LoginModal';
 import { SAVE_STATUSES, saveErrors } from './save-load-actions';
 import { focusElement } from '../utils/helpers';
 
@@ -20,9 +19,7 @@ class SaveFormLink extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      modalOpened: false
-    };
+    this.loginButtonClicked = false;
   }
 
   componentDidMount() {
@@ -32,13 +29,15 @@ class SaveFormLink extends React.Component {
     }
   }
 
-  openLoginModal = () => {
-    // console.log('opening login modal');
-    this.setState({ modalOpened: true });
-  }
-
-  closeLoginModal = () => {
-    this.setState({ modalOpened: false });
+  componentWillReceiveProps(newProps) {
+    if (this.props.user.login.showOverlay === true && newProps.user.login.showOverlay === false
+      && this.loginButtonClicked && newProps.user.login.currentlyLoggedIn) {
+      this.loginButtonClicked = false;
+      this.saveFormAfterLogin();
+    } else if (this.props.user.login.showOverlay === true && newProps.user.login.showOverlay === false
+      && this.loginButtonClicked && !newProps.user.login.currentlyLoggedIn) {
+      this.loginButtonClicked = false;
+    }
   }
 
   handleSave() {
@@ -62,8 +61,14 @@ class SaveFormLink extends React.Component {
     if (this.props.user.login.currentlyLoggedIn) {
       this.handleSave();
     } else {
-      this.openLoginModal();
+      this.loginButtonClicked = true;
+      this.props.toggleLoginOverlay(true);
     }
+  }
+
+  signIn = (e) => {
+    e.preventDefault();
+    this.props.toggleLoginOverlay(true);
   }
 
   render() {
@@ -73,14 +78,6 @@ class SaveFormLink extends React.Component {
     return (
       <div style={{ display: this.props.children ? 'inline' : null }}>
         <Element name="saveFormLinkTop"/>
-        <LoginModal
-          key={1}
-          title="Sign in to save your application"
-          onClose={this.closeLoginModal}
-          visible={this.state.modalOpened}
-          user={this.props.user}
-          onUpdateLoginUrl={this.props.onUpdateLoginUrl}
-          onLogin={this.saveFormAfterLogin}/>
         {saveErrors.has(savedStatus) &&
           <div role="alert" className="usa-alert usa-alert-error no-background-image schemaform-save-error">
             {savedStatus === SAVE_STATUSES.failure &&
@@ -88,7 +85,7 @@ class SaveFormLink extends React.Component {
             {savedStatus === SAVE_STATUSES.clientFailure &&
               'We’re sorry, but we’re unable to connect to Vets.gov. Please check that you’re connected to the Internet and try again.'}
             {savedStatus === SAVE_STATUSES.noAuth &&
-              <span>Sorry, you’re signed out. Please <button className="va-button-link" onClick={this.openLoginModal}>sign in</button> again to save your application.</span>}
+              <span>Sorry, you’re signed out. Please <button className="va-button-link" onClick={this.signIn}>sign in</button> again to save your application.</span>}
           </div>
         }
         {savedStatus !== SAVE_STATUSES.noAuth &&
