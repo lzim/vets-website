@@ -213,7 +213,7 @@ const mapStateToProps = (state) => {
   const rxState = state.health.rx;
   return {
     ...rxState.prescriptions.active,
-    prescriptions: rxState.prescriptions.items,
+    prescriptions: rxState.prescriptions.active.items,
   };
 };
 
