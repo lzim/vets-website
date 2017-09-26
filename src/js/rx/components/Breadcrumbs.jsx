@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { get } from 'lodash';
 import { Link } from 'react-router';
 import React from 'react';
 
@@ -38,16 +38,8 @@ class Breadcrumbs extends React.Component {
       }
 
       if (prescription) {
-        const prescriptionId = _.get(
-          prescription,
-          ['rx', 'attributes', 'prescriptionId']
-        );
-
-        const prescriptionName = _.get(
-          prescription,
-          ['rx', 'attributes', 'prescriptionName']
-        );
-
+        const attrs = get(prescription, 'data.attributes');
+        const { prescriptionId, prescriptionName } = attrs;
         crumbs.push(<Link to={`/${prescriptionId}`} key="history">{prescriptionName}</Link>);
       }
     } else if (pathname.match(/\/history\/?$/)) {

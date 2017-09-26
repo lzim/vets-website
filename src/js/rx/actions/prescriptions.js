@@ -3,24 +3,21 @@ import { apiRequest } from '../utils/helpers';
 export function loadPrescription(id) {
   return dispatch => {
     const urls = [`/${id}`, `/${id}/trackings`];
-    const errorHandler =
-      () => dispatch({ type: 'LOAD_PRESCRIPTION_FAILURE' });
+    const errorHandler = () => dispatch({ type: 'LOAD_PRESCRIPTION_FAILURE' });
 
-    dispatch({ type: 'LOADING_DETAIL' });
+    dispatch({ type: 'LOADING_PRESCRIPTION' });
 
-    // Fetch both the prescription and its tracking history and
+    // Fetch both the prescription's details and tracking history and
     // wait for retrieval and read of both resources to resolve.
     Promise.all(urls.map(
       url => apiRequest(url, null, response => response, errorHandler)
-    ))
-      .then(data => dispatch({
-        type: 'LOAD_PRESCRIPTION_SUCCESS',
-        data: {
-          rx: data[0].data,
-          trackings: data[1].data
-        }
-      }))
-      .catch(errorHandler);
+    )).then(response => dispatch({
+      type: 'LOAD_PRESCRIPTION_SUCCESS',
+      prescription: {
+        data: response[0].data,
+        trackings: response[1].data
+      }
+    })).catch(errorHandler);
   };
 }
 

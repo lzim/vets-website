@@ -13,20 +13,20 @@ export class Prescription extends React.Component {
   componentDidMount() {
     scrollTo(0, 0);
 
-    if (!this.props.loading) {
+    if (!this.props.prescription.loading) {
       this.props.loadPrescription(this.props.params.id);
     }
   }
 
   render() {
-    const { alert, loading, prescription } = this.props;
+    const { alert, prescription } = this.props;
     const requestedRxId = this.props.params.id;
-    const currentRxId = _.get(prescription, 'rx.id');
+    const currentRxId = _.get(prescription, 'data.id');
     const isSameRx = requestedRxId === currentRxId;
 
     const title = _.get(
       prescription,
-      ['rx', 'attributes', 'prescriptionName'],
+      ['data', 'attributes', 'prescriptionName'],
       'Prescription Refill'
     );
 
@@ -34,9 +34,9 @@ export class Prescription extends React.Component {
 
     // If the item in state doesn’t reflect the item from the URL,
     // show the loader until the requested item finishes loading.
-    if (loading || (prescription && !isSameRx)) {
+    if (prescription.loading || (prescription.data && !isSameRx)) {
       content = <LoadingIndicator message="Loading your prescription..."/>;
-    } else if (prescription) {
+    } else if (prescription.data) {
       content = (
         <div>
           <ul className="va-tabs rx-nav va-dnp">
@@ -52,7 +52,7 @@ export class Prescription extends React.Component {
           We couldn’t retrieve your prescription.
           Please refresh this page or try again later.
           If this problem persists, please call the Vets.gov Help Desk
-          at 1-855-574-7286, Monday ‒ Friday, 8:00 a.m. ‒ 8:00 p.m. (ET).
+          at 1-855-574-7286, Monday - Friday, 8:00 a.m. ‒ 8:00 p.m. (ET).
         </p>
       );
     }
@@ -79,8 +79,7 @@ const mapStateToProps = (state) => {
   const rxState = state.health.rx;
   return {
     alert: rxState.alert,
-    loading: rxState.prescriptions.detail.loading,
-    prescription: rxState.prescriptions.currentItem
+    prescription: rxState.prescriptions.prescription
   };
 };
 

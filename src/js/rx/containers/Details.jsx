@@ -22,7 +22,7 @@ export class Details extends React.Component {
 
     const facilityName = _.get(
       prescription,
-      ['rx', 'attributes', 'facilityName']
+      ['data', 'attributes', 'facilityName']
     );
 
     const phoneNumber = _.get(
@@ -38,7 +38,7 @@ export class Details extends React.Component {
   }
 
   makeInfo() {
-    const attrs = _.get(this.props.prescription, 'rx.attributes', {});
+    const attrs = _.get(this.props.prescription, 'data.attributes', {});
     const status = rxStatuses[attrs.refillStatus];
 
     const data = {
@@ -105,7 +105,7 @@ export class Details extends React.Component {
 
 const mapStateToProps = (state) => {
   const rxState = state.health.rx;
-  return { prescription: rxState.prescriptions.currentItem };
+  return { prescription: rxState.prescriptions.prescription };
 };
 
 const mapDispatchToProps = {

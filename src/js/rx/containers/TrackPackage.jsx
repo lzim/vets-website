@@ -130,9 +130,9 @@ export class TrackPackage extends React.Component {
 const mapStateToProps = (state) => {
   const rxState = state.health.rx;
   const {
-    rx: { attributes: { refillStatus } },
+    data: { attributes: { refillStatus } },
     trackings
-  } = rxState.prescriptions.currentItem;
+  } = rxState.prescriptions.prescription;
 
   return {
     isPending: ['submitted', 'refillinprocess'].includes(refillStatus),

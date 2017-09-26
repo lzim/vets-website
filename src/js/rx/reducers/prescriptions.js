@@ -1,11 +1,9 @@
-import assign from 'lodash/fp/assign';
-import set from 'lodash/fp/set';
+import { set } from 'lodash/fp';
 import _ from 'lodash';
 
 const initialState = {
-  currentItem: null,
-  items: [],
   active: {
+    items: null,
     loading: false,
     sort: {
       value: 'prescriptionName',
@@ -13,6 +11,7 @@ const initialState = {
     },
   },
   history: {
+    items: null,
     loading: false,
     sort: {
       value: 'refillSubmitDate',
@@ -21,8 +20,10 @@ const initialState = {
     page: 1,
     pages: 1
   },
-  detail: {
-    loading: false
+  prescription: {
+    data: null,
+    loading: false,
+    trackings: null
   }
 };
 
@@ -69,24 +70,31 @@ export default function prescriptions(state = initialState, action) {
     case 'LOADING_HISTORY':
       return set('history.loading', true, state);
 
-    case 'LOADING_DETAIL':
-      return set('detail.loading', true, state);
+    case 'LOADING_PRESCRIPTION':
+      return set('prescription.loading', true, state);
 
     case 'LOAD_PRESCRIPTION_FAILURE': {
-      const loadingState = set('detail.loading', false, state);
-      return set('currentItem', null, loadingState);
+      return set('prescription', {
+        data: null,
+        loading: false,
+        trackings: null
+      }, state);
     }
 
     case 'LOAD_PRESCRIPTIONS_FAILURE': {
       const section = action.active ? 'active' : 'history';
-      const loadingState = set(`${section}.loading`, false, state);
-      const errorState = set(`${section}.errors`, action.errors || [], loadingState);
-      return set('items', null, errorState);
+      return set(section, {
+        errors: action.errors || [],
+        items: null,
+        loading: false
+      }, state);
     }
 
     case 'LOAD_PRESCRIPTION_SUCCESS': {
-      const loadingState = set('detail.loading', false, state);
-      return set('currentItem', action.data, loadingState);
+      return set('prescription', {
+        loading: false,
+        ...action.prescription
+      }, state);
     }
 
     case 'LOAD_PRESCRIPTIONS_SUCCESS': {
@@ -94,23 +102,16 @@ export default function prescriptions(state = initialState, action) {
       const sortValue = Object.keys(sort)[0];
       const sortOrder = sort[sortValue];
       const pagination = action.data.meta.pagination;
-      const newState = { items: action.data.data };
 
-      if (action.active) {
-        newState.active = {
-          loading: false,
-          sort: { value: sortValue, order: sortOrder },
-        };
-      } else {
-        newState.history = {
-          loading: false,
-          sort: { value: sortValue, order: sortOrder },
-          page: pagination.currentPage,
-          pages: pagination.totalPages
-        };
-      }
+      const newState = {
+        items: action.data.data,
+        loading: false,
+        sort: { value: sortValue, order: sortOrder },
+        page: pagination.currentPage,
+        pages: pagination.totalPages
+      };
 
-      return assign(state, newState);
+      return set(action.active ? 'active' : 'history', newState, state);
     }
 
     case 'REFILL_SUCCESS': {
