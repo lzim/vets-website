@@ -107,7 +107,7 @@ class History extends React.Component {
     const {
       page,
       pages,
-      prescriptions,
+      items: prescriptions,
       sort: currentSort
     } = this.props;
 
@@ -179,7 +179,7 @@ class History extends React.Component {
   }
 
   renderContent() {
-    const { loading, prescriptions } = this.props;
+    const { loading, items: prescriptions } = this.props;
 
     if (loading) {
       return <LoadingIndicator message="Loading your prescriptions..."/>;
@@ -217,10 +217,7 @@ History.contextTypes = {
 
 const mapStateToProps = (state) => {
   const rxState = state.health.rx;
-  return {
-    ...rxState.prescriptions.history,
-    prescriptions: rxState.prescriptions.history.items
-  };
+  return rxState.prescriptions.history;
 };
 
 const mapDispatchToProps = {

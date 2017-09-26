@@ -55,7 +55,7 @@ class Active extends React.Component {
   }
 
   componentDidUpdate() {
-    const { prescriptions, sort: currentSort } = this.props;
+    const { items: prescriptions, sort: currentSort } = this.props;
     const requestedSort = this.props.location.query.sort || 'prescriptionName';
     const sortOrder = requestedSort[0] === '-' ? 'DESC' : 'ASC';
     const sortValue = sortOrder === 'DESC'
@@ -92,7 +92,7 @@ class Active extends React.Component {
   }
 
   renderViewSwitch() {
-    if (!this.props.prescriptions) {
+    if (!this.props.items) {
       return null;
     }
 
@@ -132,7 +132,7 @@ class Active extends React.Component {
   }
 
   renderPrescriptions() {
-    const { prescriptions, sort: currentSort } = this.props;
+    const { items: prescriptions, sort: currentSort } = this.props;
     let prescriptionsView;
 
     if (!prescriptions.length) {
@@ -178,7 +178,7 @@ class Active extends React.Component {
   }
 
   renderContent() {
-    const { loading, prescriptions } = this.props;
+    const { loading, items: prescriptions } = this.props;
 
     if (loading) {
       return <LoadingIndicator message="Loading your prescriptions..."/>;
@@ -211,10 +211,7 @@ Active.contextTypes = {
 
 const mapStateToProps = (state) => {
   const rxState = state.health.rx;
-  return {
-    ...rxState.prescriptions.active,
-    prescriptions: rxState.prescriptions.active.items,
-  };
+  return rxState.prescriptions.active;
 };
 
 const mapDispatchToProps = {
