@@ -1,4 +1,5 @@
 import merge from 'lodash/fp/merge';
+import appendQuery from 'append-query';
 
 import environment from './environment';
 
@@ -30,12 +31,18 @@ export function apiRequest(resource, optionalSettings = {}, success, error) {
         : Promise.resolve(response);
 
       if (!response.ok) {
-        // Refresh to show login view when requests are unauthorized.
-        if (response.status === 401) { return window.location.reload(); }
+        if (response.status === 401) {
+          window.location.href = appendQuery(
+            environment.BASE_URL,
+            { next: window.location.pathname }
+          );
+        }
+
         return data.then(Promise.reject.bind(Promise));
       }
 
       return data;
     })
-    .then(success, error);
+    .then(success)
+    .catch(error);
 }

@@ -88,6 +88,7 @@ class SchemaForm extends React.Component {
   }
 
   onBlur(id) {
+    this.props.onBlur();
     if (!this.state.formContext.touched[id]) {
       const formContext = _.set(['touched', id], true, this.state.formContext);
       this.setState({ formContext });
@@ -164,7 +165,7 @@ class SchemaForm extends React.Component {
           onSubmit={onSubmit}
           schema={schema}
           uiSchema={uiSchema}
-          validate={this.validate}
+          validate={_.once(this.validate)}
           showErrorList={false}
           formData={data}
           widgets={useReviewMode ? reviewWidgets : widgets}
