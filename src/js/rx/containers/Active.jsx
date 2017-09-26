@@ -191,7 +191,7 @@ class Active extends React.Component {
         We couldn’t retrieve your prescriptions.
         Please refresh this page or try again later. If this problem persists, please call the Vets.gov Help Desk
         at 1-855-574-7286 (TTY: 1-800-829-4833).
-        We’re here Monday–Friday, 8:00 a.m.–8:00 p.m. (ET).
+        We’re here Monday - Friday, 8:00 a.m. - 8:00 p.m. (ET).
       </p>
     );
   }
