@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 
 import ProgressButton from '../../common/components/form-elements/ProgressButton';
-import Modal from '../../common/components/Modal';
+// import Modal from '../../common/components/Modal';
+import { Modal } from 'vets.gov-design-system/dist/components.bundle.js';
 
 class FormStartControls extends React.Component {
   constructor(props) {
