@@ -209,6 +209,6 @@
     "reselect": "^2.5.4",
     "url-search-params": "^0.10.0",
     "vets-json-schema": "https://github.com/department-of-veterans-affairs/vets-json-schema.git#49b199258daf9a3cd4cfc92fe59e68544c256f20",
-    "vets.gov-design-system": "git+https://github.com/department-of-veterans-affairs/design-system.git#8f1490cb1935ab8225ddfdca6dbf6f9a2417ff62"
+    "vets.gov-design-system": "git+https://github.com/department-of-veterans-affairs/design-system.git#c7f30abb385ff5be77a085728a0d821da4881050"
   }
 }
