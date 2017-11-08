@@ -4,7 +4,8 @@ import Scroll from 'react-scroll';
 
 import { scrollToFirstError } from '../../common/utils/helpers';
 import LoadingIndicator from '../../common/components/LoadingIndicator';
-import Modal from '../../common/components/Modal';
+// import Modal from '../../common/components/Modal';
+import Modal from 'vets.gov-design-system/dist/js/components/Modal.js';
 
 import {
   addressModalContent,
