@@ -2,7 +2,8 @@ import React from 'react';
 import _ from 'lodash/fp';
 import shallowEqual from 'recompose/shallowEqual';
 
-import SegmentedProgressBar from '../components/SegmentedProgressBar';
+// import SegmentedProgressBar from '../components/SegmentedProgressBar';
+import SegmentedProgressBar from 'vets.gov-design-system/dist/js/components/SegmentedProgressBar.js';
 
 import { getActivePages } from '../utils/helpers';
 import { createFormPageList, createPageList, expandArrayPages } from './helpers';
