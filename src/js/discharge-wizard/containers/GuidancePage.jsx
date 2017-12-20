@@ -257,7 +257,7 @@ class GuidancePage extends React.Component {
     } else if ((noPrevApp || (['1', '4'].indexOf(prevAppType) > -1) || prevAppYear === '1') && oldDischarge) {
       boardExplanation = `the ${boardToSubmit.abbr} for the ${branchOfService(this.props.formValues['1_branchOfService'])}. This is because it handles all cases from 15 years ago and longer.`;
     } else if (this.props.formValues['7_courtMartial'] === '1') {
-      boardExplanation = `the ${boardToSubmit.abbr} for the ${branchOfService(this.props.formValues['1_branchOfService'])}. This is because your discharge was the result of a General Court Martial.`;
+      boardExplanation = `the ${boardToSubmit.abbr} for the ${branchOfService(this.props.formValues['1_branchOfService'])}. This is because your discharge was the result of a general court-martial.`;
     } else if (reasonCode === '5' || this.props.formValues['6_intention'] === '1') {
       boardExplanation = `the ${boardToSubmit.abbr} for the ${branchOfService(this.props.formValues['1_branchOfService'])}. This is because you're seeking to change information other than your discharge status, re-enlistment code, and narrative reason for discharge.`;
     } else if (boardToSubmit.abbr === 'DRB') {
@@ -338,7 +338,7 @@ class GuidancePage extends React.Component {
     const prevAppType = this.props.formValues['7_courtMartial'];
 
     const alertContent = (
-      <p>Note: Because you answered that you're not sure if your discharge was the outcome of a General Court Martial, it's important for you to double check your military records. The results below are for Veterans who have discharges that are administrative or the result of a special or summary court-martial. If your discharge was the outcome of a general court-martial, you may need to send your application to a different board. You can find out the correct board by completing the questions again with the information from your records.</p>
+      <p>Note: Because you answered that you're not sure if your discharge was the outcome of a general court-martial, it's important for you to double check your military records. The results below are for Veterans who have discharges that are administrative or the result of a special or summary court-martial. If your discharge was the outcome of a general court-martial, you may need to send your application to a different board. You can find out the correct board by completing the questions again with the information from your records.</p>
     );
 
     return (
