@@ -24,15 +24,15 @@ export const questionLabels = {
     '2': 'My discharge is not honorable or under honorable conditions.',
   },
   '6_intention': {
-    '1': 'I want to change my name, discharge date, or anything written in the "other remarks" section of my DD214 (This isn\'t common).',
+    '1': 'I want to change my name, discharge date, or anything written in the "other remarks" section of my DD214. (This isn\'t common).',
     '2': 'I want to change only my characterization of discharge, re-enlistment code, separation code, and/or narrative reason for discharge.',
   },
   '2_dischargeYear': {},
   '3_dischargeMonth': {},
   '7_courtMartial': {
-    '1': 'My discharge was the outcome of a general court-martial',
-    '2': 'My discharge was administrative or the outcome of a special or summary court-martial',
-    '3': 'I\'m not sure if my discharge was the outcome of a general court-martial',
+    '1': 'My discharge was the outcome of a general court-martial.',
+    '2': 'My discharge was administrative or the outcome of a special or summary court-martial.',
+    '3': 'I\'m not sure if my discharge was the outcome of a general court-martial.',
   },
   '1_branchOfService': {
     army: 'Army',
@@ -42,17 +42,17 @@ export const questionLabels = {
     marines: 'Marines',
   },
   '8_prevApplication': {
-    '1': 'I have previously applied for a discharge upgrade for this period of service',
-    '2': 'I have not previously applied for a discharge upgrade for this period of service',
+    '1': 'I have previously applied for a discharge upgrade for this period of service.',
+    '2': 'I have not previously applied for a discharge upgrade for this period of service.',
   },
   '9_prevApplicationYear': {
     '1': 'or earlier',
     '2': 'after'
   },
   '10_prevApplicationType': {
-    '1': 'I applied to a Discharge Review Board (DRB) for a Documentary Review',
-    '2': 'I applied to a Discharge Review Board (DRB) for a Personal Appearance Review',
-    '3': 'I applied to a Board for Correction of Military/Naval Records (BCMR/BCNR)',
+    '1': 'I applied to a Discharge Review Board (DRB) for a Documentary Review.',
+    '2': 'I applied to a Discharge Review Board (DRB) for a Personal Appearance Review.',
+    '3': 'I applied to a Board for Correction of Military/Naval Records (BCMR/BCNR).',
     '4': 'I\'m not sure what kind of discharge upgrade application I previously made.',
   },
   '11_failureToExhaust': {
@@ -103,9 +103,9 @@ export const answerReview = (key, formValues) => {
     case '10_prevApplicationType':
       if (ans === '3') {
         if (['navy', 'marines'].includes(formValues['1_branchOfService'])) {
-          return 'I applied to the Board for Correction of Naval Records (BCNR)';
+          return 'I applied to the Board for Correction of Naval Records (BCNR).';
         }
-        return 'I applied to a Board for Correction of Military Records (BCMR)';
+        return 'I applied to a Board for Correction of Military Records (BCMR).';
       }
       return questionLabels[key][ans];
     default:
