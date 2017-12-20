@@ -9,26 +9,26 @@ const reasonStatement = (props) => {
     case '1':
       return (
         <p>
-          Because you answered that your discharge was related to a TBI or PTSD or other mental health conditions, the DoD will apply "liberal consideration" to your case. In 2014, DoD recognized that many Veterans received discharges due to behavior connected to their previously undiagnosed or undocumented TBI, PTSD, or mental health conditions.
+          Because you answered that your discharge was related to posttraumatic stress disorder (PTSD) or other mental health conditions, the DoD will apply "liberal consideration" to your case. In 2014, the DoD recognized that many Veterans had received discharges due to behavior connected to their previously undiagnosed or undocumented PTSD or mental health condition.
         </p>
       );
     case '2':
       return (
         <p>
-          Because you answered that your discharge was related to a TBI, the DoD will apply "liberal consideration" to your case. In 2014, DoD recognized that many Veterans received discharges due to behavior connected to their previously undiagnosed or undocumented TBI.
+          Because you answered that your discharge was related to a traumatic brain injury (TBI), the DoD will apply "liberal consideration" to your case. In 2014, the DoD recognized that many Veterans had received discharges due to behavior connected to their previously undiagnosed or undocumented TBI.
         </p>
       );
     case '3':
       if (dischargeType === '2') {
         return (
           <p>
-            Because you answered that your discharge was due to your sexual orientation, the DoD will carefully consider your case. In 2011, DoD recognized that many Veterans received discharges only because of their sexual orientation. Note: You must prove that your discharge was only due to your sexual orientation and events specifically related to it.
+            Because you answered that your discharge was due to your sexual orientation, the DoD encourages you to apply for an upgrade. In 2011, the DoD recognized that many Veterans received discharges only because of their sexual orientation. Note: You must prove that your discharge was solely due to your sexual orientation and events specifically related to it. If the events leading to your discharge were unrelated, you may still receive an upgrade, but you'll have to argue that your discharge was unjust punishment for those events.
           </p>
         );
       } else if (dischargeType === '1') {
         return (
           <p>
-            Many Veterans received General or Honorable discharges due to their sexual orientation, and simply want references to sexual orientation removed from their DD214, or want the ability to re-enlist. This is a relatively straightforward application.
+            Many Veterans have received general or honorable discharges due to their sexual orientation, and simply want references to sexual orientation removed from their DD214s, or want the ability to re-enlist. This is a relatively straightforward application.
           </p>
         );
       }
