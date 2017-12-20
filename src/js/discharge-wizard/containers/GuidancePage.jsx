@@ -194,8 +194,8 @@ class GuidancePage extends React.Component {
           <ul>
             <li><strong>Military Record</strong>: In most cases, your records will be important to the Board's decision. The Board may not have easy access to your military records, especially if you served many years ago, so we strongly recommend you submit any relevant documents yourself. {boardToSubmit.abbr !== 'DRB' ? <span>Note that the {boardToSubmit.abbr} is required to help you collect evidence if you can demonstrate you made a reasonable attempt to get your records but you didn't succeed.</span> : null} {militaryRecordInfo} {specificTypeInstruction && <p>Remember, you should try to prove that {specificTypeInstruction}. Submit any documents from this record that help support your case for a discharge upgrade.</p>}</li>
             {this.renderMedicalRecordInfo()}
-            <li><strong>"Buddy Statements" or Other References From Service</strong>: On top of military records, some Veterans attach statements from friends they knew while in the service, or other individuals with direct knowledge of their time in the military. The content of the letter is more important than who it comes from, as long as their opinion is credible and they know you well. Ask friends or others to write statements in support of your appeal and send them with your application. The letter may include statements about your achievements in the military, positive relationships you formed in the military, why they think your discharge was unjust or incorrect, or good deeds you did during that time.</li>
-            <li><strong>Testaments of Achievements Since Service</strong>: You may decide to add information about what you have achieved in your life since your discharge, particularly if your discharge also involved any issues related to drugs, alcohol, or other bad behavior. This can be in the form of a letter from an employer or community leader, evidence of successful drug treatment, or copies of certificates and degrees. More specific guidance about acheivements since service will be released by DoD soon, but in the meantime add any acheivements you would like to highlight.</li>
+            <li><strong>"Buddy Statements" or Other References From Service</strong>: On top of military records, some Veterans attach statements from friends they knew while in the service, or other individuals with direct knowledge of their time in the military. The content of the letter is more important than who it comes from, as long as their opinion is credible and they know you well. The writer should state how they learned about the facts or opinions they're writing about. The letter may include statements about your achievements in the military, positive relationships you formed in the military, why they think your discharge was unjust or incorrect, and your good deeds during that time.</li>
+            <li><strong>Testaments of Achievements Since Service</strong>: You may decide to add information about what you have achieved in your life since your discharge, particularly if your discharge involved any issues related to drugs, alcohol, or bad behavior. This can be in the form of a letter from an employer or community leader, evidence of successful drug treatment, or copies of certificates and degrees. DoD will soon release more specific information about achievements since service, but, for now, add any acheivements you would like to call out.</li>
           </ul>
         </div>
       </li>
@@ -208,12 +208,12 @@ class GuidancePage extends React.Component {
       if (parseInt(this.props.formValues['2_dischargeYear'], 10) >= 1992) {
         requestQuestion = <a target="_blank" href="https://www.archives.gov/st-louis/military-personnel/ompf-background.html">Find out how to request your military medical records.</a>;
       } else {
-        requestQuestion = <span>Your <strong>military health records</strong> will be included with your VA medical records you request.</span>;
+        requestQuestion = <span>Your <strong>military medical records</strong> will be included with the VA medical records you request.</span>;
       }
 
       return (
         <li>
-          <strong>Medical Records</strong>: In most cases, the Board won’t have easy access to your medical records, so you should submit any relevant documentation yourself as much as possible.
+          <strong>Medical Records</strong>: In most cases, the Board won’t have easy access to your medical records, so you should submit any relevant documents yourself.
           <ul>
             <li>You can request your <strong>VA medical records</strong> by submitting VA Form 10-5345 to your local VA Medical Center. <a target="_blank" href="https://www.va.gov/vaforms/medical/pdf/vha-10-5345-fill.pdf">Download VA Form 10-5345.</a></li>
             <li>{requestQuestion}</li>
@@ -255,13 +255,13 @@ class GuidancePage extends React.Component {
     } else if (prevAppType === '3' && this.props.formValues['11_failureToExhaust'] !== '1') {
       boardExplanation = `the ${boardToSubmit.abbr}. This is because, if you've applied before, you must re-apply to the ${boardToSubmit.abbr} for reconsideration.`;
     } else if ((noPrevApp || (['1', '4'].indexOf(prevAppType) > -1) || prevAppYear === '1') && oldDischarge) {
-      boardExplanation = `the ${boardToSubmit.abbr} for the ${branchOfService(this.props.formValues['1_branchOfService'])}. This is because it handles all cases from 15 years ago and longer.`;
+      boardExplanation = `the ${boardToSubmit.abbr} for the ${branchOfService(this.props.formValues['1_branchOfService'])}. This is because the Board handles all cases from 15 or more years ago.`;
     } else if (this.props.formValues['7_courtMartial'] === '1') {
       boardExplanation = `the ${boardToSubmit.abbr} for the ${branchOfService(this.props.formValues['1_branchOfService'])}. This is because your discharge was the result of a general court-martial.`;
     } else if (reasonCode === '5' || this.props.formValues['6_intention'] === '1') {
-      boardExplanation = `the ${boardToSubmit.abbr} for the ${branchOfService(this.props.formValues['1_branchOfService'])}. This is because you're seeking to change information other than your discharge status, re-enlistment code, and narrative reason for discharge.`;
+      boardExplanation = `the ${boardToSubmit.abbr} for the ${branchOfService(this.props.formValues['1_branchOfService'])}. This is because you want to change information other than your characterization of discharge, re-enlistment code, separation code, and narrative reason for discharge.`;
     } else if (boardToSubmit.abbr === 'DRB') {
-      boardExplanation = `the DRB for the ${branchOfService(this.props.formValues['1_branchOfService'])}. ${prevAppType === '1' ? 'Because your application was rejected by the DRB on Documentary Review, you must apply for a Personal Appearance Review. The DRB is a panel of commissioned officers, or a combination of senior NCOs and officers. The deadline to apply to the DRB is 15 years after your date of discharge; after this time, you must apply to a different board.' : ''}`;
+      boardExplanation = `the Discharge Review Board (DRB) for the ${branchOfService(this.props.formValues['1_branchOfService'])}. ${prevAppType === '1' ? 'Because your application was rejected by the DRB on Documentary Review, you must apply for a Personal Appearance Review. The DRB is a panel of commissioned officers, or a combination of senior non-commissioned officers (NCOs) and officers. The deadline to apply to the DRB is 15 years after your date of discharge; after this time period, you must apply to a different board.' : ''}`;
     }
 
     if (boardToSubmit.abbr === 'DRB' && this.props.formValues['1_branchOfService'] === 'army') {
@@ -275,9 +275,9 @@ class GuidancePage extends React.Component {
         <div>
           <h4>Mail your completed form and all supporting materials</h4>
           <p>There are a number of different boards that handle discharge upgrades and corrections. Based on your answers on the previous page, you need to apply to {boardExplanation}</p>
-          {prevAppYear === '1' ? <p>Because your last application was made prior to the release of DoD guidance related to discharges like yours, DoD will effectively consider your application as a new application. Your previous application may be consulted for evidence, but usual rules about how to appeal previous decisions do not apply.</p> : null}
+          {prevAppYear === '1' ? <p>Because your last application was made before the release of DoD guidance related to discharges like yours, DoD will effectively consider your application as a new application. Your previous application may be consulted for evidence, but usual rules about how to appeal previous decisions do not apply.</p> : null}
           <p>
-            Mail your completed form and all supporting materials to the {boardToSubmit.abbr} at:
+            Mail your completed form and all supporting documents to the {boardToSubmit.abbr} at:
           </p>
           {venueAddress(this.props.formValues)}
           {onlineSubmissionMsg}
@@ -296,20 +296,20 @@ class GuidancePage extends React.Component {
               <button className="usa-button-unstyled usa-accordion-button" aria-controls="dbq1" itemProp="name" name="q1" aria-expanded={!!this.state.q1} onClick={this.handleFAQToggle}>What happens after I send in my application?</button>
               <div id="dbq1" className="usa-accordion-content" itemProp="acceptedAnswer" itemScope itemType="http://schema.org/Answer" aria-hidden={!this.state.q1}>
                 <div itemProp="text">
-                  <p>Nearly all applications are reviewed by the Board within 18 months. You can continue to submit supporting documentation until the Board has reviewed your application.</p>
-                  <p>If your application is successful, the Board will either issue you a DD215, which contains updates to the DD214, or an entirely new DD214. If you get a new DD214, <a target="_blank" href="https://www.dpris.dod.mil/veteranaccess.html">request a copy</a>.</p>
-                  <p>If your appeal results in raising your discharge status to honorable, you will be immediately eligible for all VA benefits and services. In the meantime, you may still apply for VA eligibility by <a target="_blank" href="https://www.benefits.va.gov/BENEFITS/docs/COD_Factsheet.pdf">requesting a Character of Discharge review</a>.</p>
+                  <p>The Board reviews nearly all applications within 18 months. You can continue to submit supporting documentation until the Board has reviewed your application.</p>
+                  <p>If your application is successful, the Board will direct your service personnel office to issue you either a DD215, which contains updates to the DD214, or an entirely new DD214. If you get a new DD214, <a target="_blank" href="https://www.dpris.dod.mil/veteranaccess.html">request a copy</a>.</p>
+                  <p>If your appeal results in raising your discharge to honorable, you'll be immediately eligible for all VA benefits and services. For now, you may still apply for VA eligibility by <a target="_blank" href="https://www.benefits.va.gov/BENEFITS/docs/COD_Factsheet.pdf">requesting a Character of Discharge review</a>.</p>
                 </div>
               </div>
             </li>
             <li itemScope itemType="http://schema.org/Question">
-              <button className="usa-button-unstyled usa-accordion-button" aria-controls="dbq2" itemProp="name" name="q2" aria-expanded={!!this.state.q2} onClick={this.handleFAQToggle}>Can I apply for VA benefits in the meantime?</button>
+              <button className="usa-button-unstyled usa-accordion-button" aria-controls="dbq2" itemProp="name" name="q2" aria-expanded={!!this.state.q2} onClick={this.handleFAQToggle}>Can I get VA benefits without a discharge upgrade?</button>
               <div id="dbq2" className="usa-accordion-content" itemProp="acceptedAnswer" itemScope itemType="http://schema.org/Answer" aria-hidden={!this.state.q2}>
                 <div itemProp="text">
                   <AlertBox
                     isVisible
                     status="warning"
-                    content={<p>Even with a less than honorable discharge, you may be able to still access some VA benefits through the <a target="_blank" href="https://www.benefits.va.gov/BENEFITS/docs/COD_Factsheet.pdf">Character of Discharge or Character of Service Determination process.</a></p>}/>
+                    content={<p>Even with a less than honorable discharge, you may be able to access some VA benefits through the <a target="_blank" href="https://www.benefits.va.gov/BENEFITS/docs/COD_Factsheet.pdf">Character of Discharge review process.</a></p>}/>
                   <p>If you have a discharge that is less than honorable, when you apply for VA benefits, it will trigger a review at VA. VA will review your record to determine if your service was "honorable for VA purposes."</p>
                   <p>You should receive a letter from VA letting you that they have begun to review your case. The VA handles these reviews on a case-by-case basis, and so they can take a long time — sometimes over a year. To access VA benefits, it helps to respond to this letter with information supporting your case. For example, if you’re asking VA to forgive your past behavior, provide evidence of positive steps you have taken in your life since your time in the service such as "buddy statements" or a certificate showing you've completed an drug rehabilitation program.</p>
                   <p>As with applying for a discharge upgrade, you may consider finding someone to advocate on your behalf (such as a lawyer or VSO) in collecting and submitting this evidence, depending on the complexity of your case.</p>
@@ -338,7 +338,7 @@ class GuidancePage extends React.Component {
     const prevAppType = this.props.formValues['7_courtMartial'];
 
     const alertContent = (
-      <p>Note: Because you answered that you're not sure if your discharge was the outcome of a general court-martial, it's important for you to double check your military records. The results below are for Veterans who have discharges that are administrative or the result of a special or summary court-martial. If your discharge was the outcome of a general court-martial, you may need to send your application to a different board. You can find out the correct board by completing the questions again with the information from your records.</p>
+      <p>Note: Because you answered that you're not sure if your discharge was the outcome of a general court-martial, it's important for you to double-check your military records. The results below are for Veterans who have discharges that are administrative or the result of a special or summary court-martial. If your discharge was the outcome of a general court-martial, you may need to send your application to a different board. You can find out the correct board by completing the questions again with the information from your records.</p>
     );
 
     return (
