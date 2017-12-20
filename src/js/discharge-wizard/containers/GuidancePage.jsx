@@ -56,7 +56,7 @@ class GuidancePage extends React.Component {
         <div className="feature">
           <h4>(Optional): Apply to the Physical Disability Board of Review (PDBR)</h4>
           <p>
-            If you believe your disability rating for TBI, PTSD, or mental health conditions is too low, consider applying to the Physical Disability Board of Review (PDBR). The Department of Defense (DoD) created the PDBR specifically to review appeals about low disability ratings for Veterans discharged between 2001 and 2009. Many Veterans discharged during this time period were inaccurately given lower disability ratings than they deserved, especially if they suffered from TBI, PTSD, or mental health conditions. If you were discharged in this period and previously received a disability rating which you feel is too low, you are eligible to apply to the PDBR for review. The PDBR does not issue discharge upgrades—but if the PDBR finds that your disability rating was unjustly low, this may help you make your case to upgrade your discharge. Many Veterans in this situation choose to make a PDBR application before applying for a discharge upgrade. <a target="_blank" href="https://health.mil/PDBR">Learn more about PBDR reviews</a> <a target="_blank" href="https://health.mil/Military-Health-Topics/Conditions-and-Treatments/Physical-Disability/Disability-Evaluation/Physical-Disability-Board-of-Review/PDBR-Application-Process">Apply for a PBDR review</a>.
+            If you believe your disability rating for TBI, PTSD, or mental health conditions is too low, consider applying to the Physical Disability Board of Review (PDBR). The DoD created the PDBR specifically to review appeals about low disability ratings for Veterans discharged between 2001 and 2009. Some Veterans discharged during this period of time received lower disability ratings than they deserved, especially if they suffered from TBI, PTSD, or other mental health conditions. If you were discharged during this period of time and previously received a disability rating of 20% or lower, you're eligible to apply to the PDBR for review. The PDBR does not issue discharge upgrades and cannot review conditions not listed in your military record before your separation. But, if the PDBR finds that your disability rating was unjustly low, it may help you make your case to upgrade your discharge. <a target="_blank" href="https://health.mil/PDBR">Learn more about PBDR reviews</a>. <a target="_blank" href="https://health.mil/Military-Health-Topics/Conditions-and-Treatments/Physical-Disability/Disability-Evaluation/Physical-Disability-Board-of-Review/PDBR-Application-Process">Apply for a PBDR review</a>.
           </p>
         </div>
       );
@@ -89,7 +89,7 @@ class GuidancePage extends React.Component {
       if (specReason) {
         return (
           <div>
-            <span>For discharges related to {reasons[questionOneResponse].name}, be sure to answer the following questions to make the strongest case:</span>
+            <span>For discharges related to {reasons[questionOneResponse].name}, be sure to answer these questions to make the strongest case:</span>
             <ul>
               <li>
                 Did you have {reasons[questionOneResponse].type === 'experience' ? 'an' : 'a'} {reasons[questionOneResponse].type} that may explain or contribute to the discharge?
@@ -112,20 +112,20 @@ class GuidancePage extends React.Component {
 
     const dd214Tips = (
       <ul>
-        <li>Pay special attention to item 6, which asks for the reason for your change. Here you should explain why you need a fresh DD214, including any problems you are facing when having to show both the DD214 and DD215. You may consider attaching additional pages to fully answer this question.</li>
+        <li>Pay special attention to item 6, which asks for the reason for your change. Here you should explain why you need a new DD214, including any problems you are facing when you have to show both the DD214 and DD215. You may consider attaching additional pages to fully answer this question.</li>
       </ul>
     );
 
     const nonDd2014Tips = (
       <ul>
         <li>Pay special attention to item 6, which asks for the reason for your change. Most Veterans attach additional pages to answer this question. {strongCaseTips()}</li>
-        {this.props.formValues['10_prevApplicationType'] === '3' && <li>Because you are applying for reconsideration of a previous application, you will need to enter the previous application number in Item 6b. Note: You are generally only eligible for reconsideration if you have new evidence to present that was not available at the time of your last application. Make sure you clarify exactly what that new evidence is. Additionally, the change in DoD policy, such as new consideration guidelines for PTSD, TBI, and sexual assault or harassment can qualify you for reconsideration.</li>}
+        {this.props.formValues['10_prevApplicationType'] === '3' && <li>Because you're applying for reconsideration of a previous application, you'll need to enter the previous application number in Item 6b. Note: You are generally only eligible for reconsideration if you have new evidence to present that was not available when you applied last time. Make sure you're clear about exactly what that new evidence is. Additionally, changes in DoD policy, like the new consideration guidelines for PTSD, TBI, and sexual assault or harassment, can qualify you for reconsideration.</li>}
         {this.props.formValues['4_reason'] === '4' && <li>
-          Note: For upgrades related to sexual assault or harassment, you do not need to prove the original assault or harassment occurred—meaning if you didn't file charges or report the incident, you can still apply for an upgrade. The important part of your application is to explain how the incident impacted your service. For example, detail how the incident caused a decrease in your productivity, or was the reason for PTSD.
+          Note: For upgrades related to sexual assault or harassment, you do not need to prove the original assault or harassment occurred—meaning if you didn't file charges or report the incident, you can still apply for an upgrade. The important part of your application is where you explain the impact of the incident on your service. For example, detail how the incident caused a decrease in your productivity, or was the reason for PTSD.
         </li>}
-        {boardToSubmit.abbr !== 'DRB' && <li>Item 8 asks for your date of "discovery" of the injustice. If this date isn’t in the last 3 years, you’ll need to argue that the Board should hear your case anyway. This is not a strict date, so don’t let the 3-year rule keep you from applying if you have a strong case. You may note your recent discovery of new evidence about your claim or recent policy changes (like careful consideration for PTSD, TBI, or military sexual assault or harassment).</li>}
+        {boardToSubmit.abbr !== 'DRB' && <li>Item 8 asks for your date of "discovery" of the injustice. If this date isn’t in the last 3 years, you’ll need to argue that the Board should hear your case anyway. This is not a strict date, so don’t let the 3-year rule keep you from applying if you have a strong case. You may note your recent discovery of new evidence about your claim or recent policy changes (like liberal consideration for PTSD, TBI, or military sexual assault or harassment).</li>}
         {boardToSubmit.abbr !== 'DRB' && <li>Item 10 asks if you're willing to appear in person before the Board in Washington, DC. The Board rarely asks Veterans to appear in person, but if you say you're willing to do so, it may help show how serious you are about your case.</li>}
-        {boardToSubmit.abbr === 'DRB' && this.props.formValues['10_prevApplicationType'] !== '1' && <li>You can request either a Documentary Review or Personal Appearance Review from the Discharge Review Board (DRB). If your case is especially complicated and requires detailed explanation, you <strong>may</strong> have more success with a Personal Appearance Review. Note that you will have to pay your travel costs if you make a personal appearance. Documentary Reviews are generally faster and so it is usually recommended to begin with one. Also, if you are denied in a Documentary Review, you can then appeal via Personal Appearance, but you can’t request Documentary Review after a Personal Appearance.</li>}
+        {boardToSubmit.abbr === 'DRB' && this.props.formValues['10_prevApplicationType'] !== '1' && <li>You can request either a Documentary Review or Personal Appearance Review from the Discharge Review Board (DRB). If your case is especially complicated and requires detailed explanation, you <strong>may</strong> have more success with a Personal Appearance Review. Note that you'll have to pay your travel costs if you make a personal appearance. Documentary Reviews are generally faster, so we recommend you begin with this type of review. Also, if you're denied in a Documentary Review, you can then appeal through a Personal Appearance Review. But you can’t request Documentary Review after a Personal Appearance Review.</li>}
         {boardToSubmit.abbr === 'DRB' && this.props.formValues['10_prevApplicationType'] === '1' && <li>The DRB allows you to request either a Documentary Review or a Personal Appearance Review. Because your application was already denied during a Documentary Review, you must apply for a Personal Appearance Review in Washington, DC. Note that you will have to pay your travel costs if you make a personal appearance.</li>}
       </ul>
     );
@@ -143,7 +143,7 @@ class GuidancePage extends React.Component {
           <AlertBox
             content={<div>
               <h4 className="usa-alert-heading">Need help preparing your application?</h4>
-              <p>The process of preparing a discharge upgrade or correction application can sometimes be a lot of work and take a long time. Although many Veterans are successful by themselves, it may be helpful to find someone to advocate for you in this process. Try a Veteran Service Organization (VSO), search online for a lawyer who may provide services for low or no cost, or ask other Veterans for recommendations. <a target="_blank" href="https://www.benefits.va.gov/vso/varo.asp">Find a VSO near you</a>.</p>
+              <p>The process of preparing a discharge upgrade or correction application can be a lot of work and can take a long time. Although many Veterans are successful on their own, you may want to consider finding someone to advocate for you in this process. Try a Veteran Service Organization (VSO), search online for a lawyer who may provide services for low or no cost, or ask other Veterans for recommendations. <a target="_blank" href="https://www.benefits.va.gov/vso/varo.asp">Find a VSO near you</a>.</p>
             </div>}
             isVisible
             status="warning"/>
@@ -160,7 +160,7 @@ class GuidancePage extends React.Component {
     const boardToSubmit = board(this.props.formValues);
     let militaryRecordInfo;
     if (parseInt(this.props.formValues['2_dischargeYear'], 10) >= 1997) {
-      militaryRecordInfo = <p>You can retrieve your complete military personnel record (your Official Military Personnel File, or OMPF) online. <a target="_blank" href="https://www.dpris.dod.mil/veteranaccess.html">Get your military personnel record.</a></p>;
+      militaryRecordInfo = <p>You can get your complete military personnel record (your Official Military Personnel File, or OMPF) online. <a target="_blank" href="https://www.dpris.dod.mil/veteranaccess.html">Get your military personnel record.</a></p>;
     } else {
       militaryRecordInfo = <p>You can make a request online or by mail to get your complete military personnel record (your Official Military Personnel File, or OMPF) mailed to you. If at first you get only some of the available records, you should request the full set of records. <a target="_blank" href="https://www.archives.gov/veterans/military-service-records">Get your military personnel record.</a></p>;
     }
@@ -175,7 +175,7 @@ class GuidancePage extends React.Component {
         break;
       case '3':
         if (this.props.formValues['5_dischargeType'] === '2') {
-          specificTypeInstruction = 'your discharge status was due only to your sexual orientation and not other bad conduct';
+          specificTypeInstruction = 'your character of discharge was due only to your sexual orientation and not to bad conduct';
         }
         break;
       case '4':
@@ -192,9 +192,9 @@ class GuidancePage extends React.Component {
             To improve your chances of success, also include as many of the below documents as you can.
           </p>
           <ul>
-            <li><strong>Military Record</strong>: In most cases, your records will be important to the Board's decision. The Board may not have easy access to your military records, especially if you served many years ago, so we strongly recommend you submit any relevant documents yourself. {boardToSubmit.abbr !== 'DRB' ? <span>Note that the {boardToSubmit.abbr} is required to help you collect evidence if you can demonstrate you reasonably attempted to obtain your records but could not.</span> : null} {militaryRecordInfo} {specificTypeInstruction && <p>Remember, you should try to prove that {specificTypeInstruction}. Submit any documents from this record which help support your case for a discharge upgrade.</p>}</li>
+            <li><strong>Military Record</strong>: In most cases, your records will be important to the Board's decision. The Board may not have easy access to your military records, especially if you served many years ago, so we strongly recommend you submit any relevant documents yourself. {boardToSubmit.abbr !== 'DRB' ? <span>Note that the {boardToSubmit.abbr} is required to help you collect evidence if you can demonstrate you made a reasonable attempt to get your records but you didn't succeed.</span> : null} {militaryRecordInfo} {specificTypeInstruction && <p>Remember, you should try to prove that {specificTypeInstruction}. Submit any documents from this record that help support your case for a discharge upgrade.</p>}</li>
             {this.renderMedicalRecordInfo()}
-            <li><strong>"Buddy Statements" or Other References From Service</strong>: On top of military records, some Veterans submit statements from friends they knew while in the service, or other individuals with direct knowledge of their time in the military. The content of the letter is more important than who it comes from, as long as their opinion is credible and they know you well. Ask friends or others to write statements in support of your appeal and send them with your application. The letter may include statements about your achievements in the military, positive relationships you formed in the military, why they think your discharge was unjust or incorrect, or good deeds you did during that time.</li>
+            <li><strong>"Buddy Statements" or Other References From Service</strong>: On top of military records, some Veterans attach statements from friends they knew while in the service, or other individuals with direct knowledge of their time in the military. The content of the letter is more important than who it comes from, as long as their opinion is credible and they know you well. Ask friends or others to write statements in support of your appeal and send them with your application. The letter may include statements about your achievements in the military, positive relationships you formed in the military, why they think your discharge was unjust or incorrect, or good deeds you did during that time.</li>
             <li><strong>Testaments of Achievements Since Service</strong>: You may decide to add information about what you have achieved in your life since your discharge, particularly if your discharge also involved any issues related to drugs, alcohol, or other bad behavior. This can be in the form of a letter from an employer or community leader, evidence of successful drug treatment, or copies of certificates and degrees. More specific guidance about acheivements since service will be released by DoD soon, but in the meantime add any acheivements you would like to highlight.</li>
           </ul>
         </div>
