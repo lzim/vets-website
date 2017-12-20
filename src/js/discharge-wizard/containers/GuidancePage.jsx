@@ -95,13 +95,13 @@ class GuidancePage extends React.Component {
                 Did you have {reasons[questionOneResponse].type === 'experience' ? 'an' : 'a'} {reasons[questionOneResponse].type} that may explain or contribute to the discharge?
               </li>
               <li>
-                Did that {reasons[questionOneResponse].type} {questionOneResponse === '4' ? 'happen' : 'exist'} during your military service?
+                Did that {reasons[questionOneResponse].type} {questionOneResponse === '4' ? 'happen' : 'start or get worse'} during your military service?
               </li>
               <li>
                 Why does the {reasons[questionOneResponse].type} directly explain or contribute to the discharge?
               </li>
               <li>
-                Why does the {reasons[questionOneResponse].type} outweigh any other reasons you may have been discharged for?
+                Why does the {reasons[questionOneResponse].type} carry more weight than any other reasons you may have been discharged for?
               </li>
             </ul>
           </div>
@@ -124,7 +124,7 @@ class GuidancePage extends React.Component {
           Note: For upgrades related to sexual assault or harassment, you do not need to prove the original assault or harassment occurred—meaning if you didn't file charges or report the incident, you can still apply for an upgrade. The important part of your application is to explain how the incident impacted your service. For example, detail how the incident caused a decrease in your productivity, or was the reason for PTSD.
         </li>}
         {boardToSubmit.abbr !== 'DRB' && <li>Item 8 asks for your date of "discovery" of the injustice. If this date isn’t in the last 3 years, you’ll need to argue that the Board should hear your case anyway. This is not a strict date, so don’t let the 3-year rule keep you from applying if you have a strong case. You may note your recent discovery of new evidence about your claim or recent policy changes (like careful consideration for PTSD, TBI, or military sexual assault or harassment).</li>}
-        {boardToSubmit.abbr !== 'DRB' && <li>Item 10 asks if you are willing to appear in-person before the Board in Washington, DC. The Board rarely asks Veterans to appear in person, but indicating that you’re willing to do so may help show how serious you are about your case.</li>}
+        {boardToSubmit.abbr !== 'DRB' && <li>Item 10 asks if you're willing to appear in person before the Board in Washington, DC. The Board rarely asks Veterans to appear in person, but if you say you're willing to do so, it may help show how serious you are about your case.</li>}
         {boardToSubmit.abbr === 'DRB' && this.props.formValues['10_prevApplicationType'] !== '1' && <li>You can request either a Documentary Review or Personal Appearance Review from the Discharge Review Board (DRB). If your case is especially complicated and requires detailed explanation, you <strong>may</strong> have more success with a Personal Appearance Review. Note that you will have to pay your travel costs if you make a personal appearance. Documentary Reviews are generally faster and so it is usually recommended to begin with one. Also, if you are denied in a Documentary Review, you can then appeal via Personal Appearance, but you can’t request Documentary Review after a Personal Appearance.</li>}
         {boardToSubmit.abbr === 'DRB' && this.props.formValues['10_prevApplicationType'] === '1' && <li>The DRB allows you to request either a Documentary Review or a Personal Appearance Review. Because your application was already denied during a Documentary Review, you must apply for a Personal Appearance Review in Washington, DC. Note that you will have to pay your travel costs if you make a personal appearance.</li>}
       </ul>
@@ -162,7 +162,7 @@ class GuidancePage extends React.Component {
     if (parseInt(this.props.formValues['2_dischargeYear'], 10) >= 1997) {
       militaryRecordInfo = <p>You can retrieve your complete military personnel record (your Official Military Personnel File, or OMPF) online. <a target="_blank" href="https://www.dpris.dod.mil/veteranaccess.html">Get your military personnel record.</a></p>;
     } else {
-      militaryRecordInfo = <p>You can make a request online or by mail to receive your complete military personnel record (your Official Military Personnel File, or OMPF) in the mail. You may at first only receive a portion of the available records; you will want to request the full set of records.<a target="_blank" href="https://www.archives.gov/veterans/military-service-records">Get your military personnel record.</a></p>;
+      militaryRecordInfo = <p>You can make a request online or by mail to get your complete military personnel record (your Official Military Personnel File, or OMPF) mailed to you. If at first you get only some of the available records, you should request the full set of records. <a target="_blank" href="https://www.archives.gov/veterans/military-service-records">Get your military personnel record.</a></p>;
     }
 
     let specificTypeInstruction;
@@ -189,10 +189,10 @@ class GuidancePage extends React.Component {
         <div>
           <h4>Add supporting information</h4>
           <p>
-            To improve your chances of success, also include as many of the following documents as you can. {boardToSubmit.abbr !== 'DRB' ? <span>Note that the {boardToSubmit.abbr} is required to help you collect evidence if you can demonstrate you reasonably attempted to obtain your records but could not.</span> : null}
+            To improve your chances of success, also include as many of the below documents as you can.
           </p>
           <ul>
-            <li><strong>Military Record</strong>: The Board won’t have access to your military records, so you will need to submit any relevant documentation yourself. {militaryRecordInfo} {specificTypeInstruction && <p>Remember, you must prove that {specificTypeInstruction}. Submit any documents from this record which help support your case for a discharge upgrade.</p>}</li>
+            <li><strong>Military Record</strong>: In most cases, your records will be important to the Board's decision. The Board may not have easy access to your military records, especially if you served many years ago, so we strongly recommend you submit any relevant documents yourself. {boardToSubmit.abbr !== 'DRB' ? <span>Note that the {boardToSubmit.abbr} is required to help you collect evidence if you can demonstrate you reasonably attempted to obtain your records but could not.</span> : null} {militaryRecordInfo} {specificTypeInstruction && <p>Remember, you should try to prove that {specificTypeInstruction}. Submit any documents from this record which help support your case for a discharge upgrade.</p>}</li>
             {this.renderMedicalRecordInfo()}
             <li><strong>"Buddy Statements" or Other References From Service</strong>: On top of military records, some Veterans submit statements from friends they knew while in the service, or other individuals with direct knowledge of their time in the military. The content of the letter is more important than who it comes from, as long as their opinion is credible and they know you well. Ask friends or others to write statements in support of your appeal and send them with your application. The letter may include statements about your achievements in the military, positive relationships you formed in the military, why they think your discharge was unjust or incorrect, or good deeds you did during that time.</li>
             <li><strong>Testaments of Achievements Since Service</strong>: You may decide to add information about what you have achieved in your life since your discharge, particularly if your discharge also involved any issues related to drugs, alcohol, or other bad behavior. This can be in the form of a letter from an employer or community leader, evidence of successful drug treatment, or copies of certificates and degrees. More specific guidance about acheivements since service will be released by DoD soon, but in the meantime add any acheivements you would like to highlight.</li>
@@ -253,7 +253,7 @@ class GuidancePage extends React.Component {
     } else if (prevAppType === '2') {
       boardExplanation = `the ${boardToSubmit.abbr} for the ${branchOfService(this.props.formValues['1_branchOfService'])} to appeal that decision. This is because your application was denied by the Discharge Review Board (DRB) on a Personal Appearance Review.`;
     } else if (prevAppType === '3' && this.props.formValues['11_failureToExhaust'] !== '1') {
-      boardExplanation = `the ${boardToSubmit.abbr}. This is because if you've applied before, you must re-apply to the ${boardToSubmit.abbr} for reconsideration.`;
+      boardExplanation = `the ${boardToSubmit.abbr}. This is because, if you've applied before, you must re-apply to the ${boardToSubmit.abbr} for reconsideration.`;
     } else if ((noPrevApp || (['1', '4'].indexOf(prevAppType) > -1) || prevAppYear === '1') && oldDischarge) {
       boardExplanation = `the ${boardToSubmit.abbr} for the ${branchOfService(this.props.formValues['1_branchOfService'])}. This is because it handles all cases from 15 years ago and longer.`;
     } else if (this.props.formValues['7_courtMartial'] === '1') {
@@ -327,7 +327,7 @@ class GuidancePage extends React.Component {
           <li><a target="_blank" href="https://www.vets.gov/health-care/health-conditions/mental-health/ptsd/">VA health benefits for Veterans with PTSD</a></li>
           {this.props.formValues['1_branchOfService'] === 'army' && <li><a target="_blank" href="http://arba.army.pentagon.mil/adrb-overview.html">Army Discharge Review Board</a></li>}
           {['navy', 'marines'].includes(this.props.formValues['1_branchOfService']) && <li><a target="_blank" href="http://www.secnav.navy.mil/mra/CORB/pages/ndrb/default.aspx">Navy Discharge Review Board</a></li>}
-          <li><a target="_blank" href="https://www.benefits.va.gov/BENEFITS/docs/COD_Factsheet.pdf">VA Guidance on COD Review</a></li>
+          <li><a target="_blank" href="https://www.benefits.va.gov/BENEFITS/docs/COD_Factsheet.pdf">VA Guidance on Character of Discharge Reviews</a></li>
         </ul>
       </div>
     );
