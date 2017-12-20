@@ -30,9 +30,9 @@ export const questionLabels = {
   '2_dischargeYear': {},
   '3_dischargeMonth': {},
   '7_courtMartial': {
-    '1': 'My discharge was the outcome of a General Court Martial',
-    '2': 'My discharge was administrative or the outcome of a Special or Summary Court Martial',
-    '3': 'I\'m not sure if my discharge was the outcome of a General Court Martial',
+    '1': 'My discharge was the outcome of a general court-martial',
+    '2': 'My discharge was administrative or the outcome of a special or summary court-martial',
+    '3': 'I\'m not sure if my discharge was the outcome of a general court-martial',
   },
   '1_branchOfService': {
     army: 'Army',
