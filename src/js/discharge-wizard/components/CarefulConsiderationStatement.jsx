@@ -28,7 +28,7 @@ const reasonStatement = (props) => {
       } else if (dischargeType === '1') {
         return (
           <p>
-            Many Veterans received General or Honorable discharges due to their sexual orientation, and simply want references to sexual orientation removed from their DD-214, or want the ability to re-enlist. This is a relatively straightforward application.
+            Many Veterans received General or Honorable discharges due to their sexual orientation, and simply want references to sexual orientation removed from their DD214, or want the ability to re-enlist. This is a relatively straightforward application.
           </p>
         );
       }
@@ -42,7 +42,7 @@ const reasonStatement = (props) => {
     case '5':
       return (
         <p>
-          This is a common request for transgender Veterans whose DD-214 name does not match the name they currently use.
+          This is a common request for transgender Veterans whose DD214 name does not match the name they currently use.
         </p>
       );
     default:
