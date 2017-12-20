@@ -17,7 +17,7 @@ export const questionLabels = {
     '5': 'I am transgender, and my discharge shows my birth name instead of my current name.',
     '6': 'There is an error on my discharge paperwork for other reasons.',
     '7': 'My discharge is unjust, and this is not related to any of the reasons listed above.',
-    '8': 'I received a discharge upgrade or correction, but my upgrade came in the form of a DD-215 and I want an updated DD-214.',
+    '8': 'I received a discharge upgrade or correction, but my upgrade came in the form of a DD215 and I want an updated DD214.',
   },
   '5_dischargeType': {
     '1': 'My discharge is honorable or general under honorable conditions, and I want only my narrative reason for discharge, separation code, or re-enlistment code changed.',
