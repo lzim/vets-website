@@ -51,7 +51,7 @@ export const questionLabels = {
   },
   '10_prevApplicationType': {
     '1': 'I applied to a Discharge Review Board (DRB) for a Documentary Review.',
-    '2': 'I applied to a Discharge Review Board (DRB) for a Personal Appearance Review.',
+    '2': 'I applied to a Discharge Review Board (DRB) for a Personal Appearance Review in Washington, DC.',
     '3': 'I applied to a Board for Correction of Military/Naval Records (BCMR/BCNR).',
     '4': 'I\'m not sure what kind of discharge upgrade application I previously made.',
   },
