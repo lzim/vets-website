@@ -60,7 +60,7 @@ export const questionLabels = {
     '2': 'The BCMR/BCNR denied my application for other reasons, such as not agreeing with the evidence in my application.',
   },
   '12_priorService': {
-    '1': 'I have discharge paperwork documenting a discharge under honorable or general under honorable conditions.',
+    '1': 'I have discharge paperwork documenting a discharge that is honorable or under honorable conditions.',
     '2': 'I completed a prior period of service, but I did not receive discharge paperwork from that period.',
     '3': 'I did not complete an earlier period of service.',
   }
