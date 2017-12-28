@@ -124,7 +124,7 @@ Once you leave active duty, you can still provide a future effective date that t
 <div itemprop="text">
 
 - [DoD website for information on transferring benefits](http://archive.defense.gov/Home/Features/2009/0409_gibill/)
-- [Fact sheet on transferring Post-9/11 GI Bill benefits](http://www.benefits.va.gov/gibill/docs/factsheets/Transferability_Factsheet.pdf)
+- [Fact sheet on transferring Post-9/11 GI Bill benefits](https://www.benefits.va.gov/gibill/docs/factsheets/Transferability_Factsheet.pdf)
 - To find out if you qualify, the status of your transfer request, and how to use the TEB Portlet (for service-specific questions), please contact the right career counselor or personnel center from this list:
   - Army Active-Duty Officer  [Email](mailto:usarmy.knox.hrc.mbx.tagd-post-911-gi-bill@mail.mil)
   - Army Active-Duty Enlisted  [Email](mailto:usarmy.knox.hrc.mbx.tagd-post-911-gi-bill@mail.mil)
