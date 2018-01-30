@@ -17,12 +17,13 @@ module.exports = {
   live_output: true,
   parallel_process_delay: 10,
   disable_colors: process.env.BUILDTYPE === 'production',
-  test_workers: false,
+    test_workers: false,
+
   test_settings: {
     'default': {
-      launch_url: `localhost:${process.env.WEB_PORT || 3333}`,
+      launch_url: `vets-website:${process.env.WEB_PORT || 3333}`,
       filter: './test/**/*.e2e.spec.js',
-      selenium_host: 'localhost',
+      selenium_host: 'selenium-hub',
       selenium_port: selenium_server_port,
       use_ssl: false,
       silent: true,
@@ -43,13 +44,9 @@ module.exports = {
         }
       },
       selenium: {
-        cli_args: {
-          'webdriver.chrome.driver': chromedriver.path
-        },
-        start_process: true,
-        server_path: seleniumServer.path,
+        start_process: false,
         log_path: './logs/selenium',
-        host: '127.0.0.1',
+        host: 'selenium-hub',
         port: selenium_server_port,
       },
       test_workers: {

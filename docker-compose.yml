@@ -1,0 +1,37 @@
+version: '3'
+services:
+  vets-website:
+    build:
+      context: .
+    command: './script/run-nightwatch.sh'
+    volumes:
+      - ".:/application"
+  selenium-hub:
+    image: selenium/hub
+    links:
+      - vets-website
+    ports:
+        - 4444:4444
+  selenium-chrome:
+    image: selenium/node-chrome
+    links:
+      - vets-website
+      - selenium-hub:hub
+    environment:
+      HUB_PORT_4444_TCP_ADDR: hub
+      HUB_PORT_4444_TCP_PORT: 4444
+    volumes:
+      - /dev/shm:/dev/shm
+  vets-website-test:
+    command: 'npm --no-color run nightwatch --'
+    volumes:
+      - ".:/application"
+    environment:
+      - BABEL_ENV=test
+    build:
+      context: .
+    links:
+      - selenium-hub
+      - vets-website
+
+  
